@@ -1,15 +1,29 @@
 .container {
-  background-color: #fff;
+  background-color: transparent;
   text-align: center;
   font-size: 3rem;
   display: block;
   width: 100%;
-  border: 1px solid #000;
-  box-shadow: 2px 2px 2px #000;
-  margin-bottom: 50px;
+  /* border: 1px solid #000;
+  box-shadow: 2px 2px 2px #000; */
+  /* margin-bottom: 4rem;
+  padding-bottom: 2rem; */
 }
 
-.btn {
+.subCont {
+  font-size: 3rem;
+  background-color: #fff;
+  text-align: center;
+  box-shadow: 2px 6px 6px #000;
+  margin-bottom: 50px;
+  background-color: #fff;
+}
+
+.form {
+  padding-bottom: 1rem;
+}
+
+/* .btn {
   color: #008000;
   padding: 10px;
   font-size: 1.5rem;
@@ -18,30 +32,55 @@
   margin-left: 20px;
   cursor: pointer;
   margin: 10px 0;
-}
+} */
 
 .chosen {
   background-color: #008000;
   color: #fff;
 }
 
-.answer {
-  font-size: 3rem;
-  width: 4rem;
+.qstnCont {
+  font-size: 6rem;
+  font-weight: bold;
+  text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+  display: inline-block;
+  margin: 5px;
+}
+
+.qstnCont span {
+  /* padding: 1rem; */
+}
+
+.qstnCont .input {
+  width: 8rem;
+  font-size: 6rem;
+}
+
+.qstnCont .btn {
+  font-size: 2.3rem;
+  margin-left: 1rem;
 }
 
 .resultCont {
   font-size: 1.5rem;
   display: flex;
+  flex-wrap: wrap;
+  text-align: left;
 }
 
-.resultCont > span {
+.results {
+  flex: 0 0 25%;
+}
+
+.results > span {
   display: inline-block;
+  padding: 2px;
 }
 
-.resultCont > span:first-child {
+.results > span:first-child {
   color: #918d8d;
   margin-right: 0.2rem;
+  font-size: 1rem;
 }
 
 .correct {
@@ -50,4 +89,9 @@
 
 .wrong {
   color: #f00;
+}
+
+::placeholder {
+  /* Most modern browsers support this now. */
+  color: #d3d3d3;
 }

@@ -8,15 +8,17 @@ import Records from "./components/Records";
 function App() {
   return (
     <div className={styles.container}>
-      <header className={styles.hdr}>
-        <h1 className={styles.header}>Learning for kids</h1>
-      </header>
-      <main>
-        <Maths />
-        <Spelling />
-        <Timer />
-        <Records />
-      </main>
+      <div className={styles.contInner}>
+        <header className={styles.subCont}>
+          <h1 className={styles.header}>Learning for kids</h1>
+        </header>
+        <main>
+          <Maths />
+          {/* <Timer /> */}
+          <Spelling />
+          <Records />
+        </main>
+      </div>
     </div>
   );
 }

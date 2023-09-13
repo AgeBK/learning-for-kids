@@ -4,18 +4,32 @@ import styles from "./User.module.css";
 const User = ({ props }) => {
   const { setUserName, userName, setStep1, step1 } = props;
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && userName.length > 0) {
+      setStep1(true);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { value } = e.target;
+    setUserName(value[0].toUpperCase() + value.slice(1));
+  };
+
   const user = (
     <div className={styles.container}>
       <input
         className={styles.input}
-        onChange={(e) => setUserName(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && setStep1(true)}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
         type="text"
         placeholder="Enter name"
         value={userName}
         autoFocus
       />
-      <button className={styles.btn} onClick={() => setStep1(true)}>
+      <button
+        className={styles.btn}
+        onClick={() => userName.length && setStep1(true)}
+      >
         Enter
       </button>
     </div>

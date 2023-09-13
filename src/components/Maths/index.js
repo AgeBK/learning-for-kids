@@ -1,14 +1,17 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import User from "../User";
 import Timer from "../Timer";
+import Records from "../Records";
 import styles from "./Maths.module.css";
 
 function Maths() {
-  const [results, setResults] = useState([]); // store questions and answers for current challenge
   const [userName, setUserName] = useState("");
   const [step1, setStep1] = useState(false); // step 1: A name must be entered, then timer will display
-  const [step2, setStep2] = useState(false); // step 2:  After pre-timer (Ready, set, go) runs, the questions will be presented
+  const [step2, setStep2] = useState(false); // step 2: Start. After pre-timer (Ready, set, go) runs, the questions will be presented
+  const [step3, setStep3] = useState(false); // step 3: Completed. After normal timer has reached zero
   const answerRef = useRef(0); // store users answer
+  const [results, setResults] = useState([]); // store questions and answers for current challenge
+
   const [operation, setOperation] = useState("Addition");
   const operations = ["Addition", "Subtraction"];
   const maxNum = 20;
@@ -22,15 +25,19 @@ function Maths() {
       return (
         <>
           <h2 className={styles.hdr}>Choose Challenge</h2>
-          {operations.map((val) => (
-            <button
-              className={`${styles.btn} ${val === operation && styles.chosen}`}
-              onClick={() => setOperation(val)}
-              key={val}
-            >
-              {val}
-            </button>
-          ))}
+          <div className={styles.btnCont}>
+            {operations.map((val) => (
+              <button
+                className={`${styles.btn} ${
+                  val === operation && styles.chosen
+                }`}
+                onClick={() => setOperation(val)}
+                key={val}
+              >
+                {val}
+              </button>
+            ))}
+          </div>
         </>
       );
     }
@@ -58,8 +65,8 @@ function Maths() {
 
   const RenderQuesiton = () => {
     console.log("RenderQuestion");
-    // if (step1 && step2) {
-    if (step1 && true) {
+    if (step1 && step2) {
+      // if (step1 && true) {
       const num1 = randomNumber();
       const num2 = randomNumber();
       // const answer = checkAnswer();
@@ -102,8 +109,26 @@ function Maths() {
     console.log("Results");
     const HTML = (
       <section className={styles.subCont}>
-        <h3 className={styles.ResultsHdr}>Results</h3>
+        <h3 className={styles.resultsHdr}>Results</h3>
+        <div className={styles.resultsSubHdrs}>
+          <h4 className={styles.correct}>
+            Correct:
+            {
+              results.filter(({ answer, userAnswer }) => answer === userAnswer)
+                .length
+            }
+          </h4>
+          <h4 className={styles.wrong}>
+            Wrong:
+            {
+              results.filter(({ answer, userAnswer }) => answer !== userAnswer)
+                .length
+            }
+          </h4>
+        </div>
+
         <div className={styles.resultCont}>
+          <br />
           {results.map(({ num1, num2, answer, userAnswer, operation }, ind) => (
             <div className={styles.results}>
               <span className={styles.num}>Q{ind + 1}: </span>
@@ -123,10 +148,10 @@ function Maths() {
         </div>
       </section>
     );
-    return results.length && userName.length ? HTML : null;
+    return step2 ? HTML : null;
   };
 
-  // const setStep2 = useCallback(() => setStep2, []);
+  // const setStep2 = useCallback(() => setStep2, []); TODO:// LOOK into this
 
   return (
     <>
@@ -138,17 +163,17 @@ function Maths() {
       <div className={styles.container}>
         <section className={styles.subCont}>
           <h2 className={styles.hdr} onClick={() => setStep1(false)}>
-            {step1 ? userName : "Maths"}
+            {step1 && userName}
           </h2>
           <User props={{ setUserName, userName, setStep1, step1 }} />
         </section>
         <section className={styles.subCont}>
-          <ChooseOperation />{" "}
+          <ChooseOperation />
         </section>
-
         <RenderQuesiton />
-        <RenderTimer props={{ setStep2, step2 }} />
+        <RenderTimer props={{ setStep2, step2, setStep3 }} />
         <Results />
+        <Records props={{ results, userName, operation }} />
       </div>
     </>
   );

@@ -19,20 +19,9 @@
   background-color: #fff;
 }
 
-.form {
+.btnCont {
   padding-bottom: 1rem;
 }
-
-/* .btn {
-  color: #008000;
-  padding: 10px;
-  font-size: 1.5rem;
-  margin: 0;
-  border-radius: 15px;
-  margin-left: 20px;
-  cursor: pointer;
-  margin: 10px 0;
-} */
 
 .chosen {
   background-color: #008000;
@@ -66,6 +55,17 @@
   display: flex;
   flex-wrap: wrap;
   text-align: left;
+  padding: 0.5rem;
+}
+
+.resultsSubHdrs {
+  line-height: 1.5rem;
+}
+
+.resultsSubHdrs h4 {
+  font-size: 1.5rem;
+  display: inline-block;
+  margin: 0 0.5rem;
 }
 
 .results {
@@ -74,7 +74,7 @@
 
 .results > span {
   display: inline-block;
-  padding: 2px;
+  padding: 1px;
 }
 
 .results > span:first-child {

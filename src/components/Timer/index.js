@@ -5,7 +5,7 @@ function Timer({ props }) {
   console.log("Timer");
   console.log(props);
 
-  const { setStep2, step2 } = props;
+  const { setStep2, step2, setStep3 } = props;
 
   const startTime = 60;
   const [time, setTime] = useState(3);
@@ -28,9 +28,10 @@ function Timer({ props }) {
     }
     if (complete) {
       setStep2(false);
+      setStep3(true);
     }
     return () => clearInterval(timeRef.current);
-  }, [start, step2, setStep2, complete]);
+  }, [start, step2, setStep2, setStep3, complete]);
 
   const startTimer = () => setStart(true);
 
@@ -42,6 +43,7 @@ function Timer({ props }) {
     setTime(startTime);
     setComplete(true);
     setStart(false);
+    //       setStep3(true)
   }
 
   const startPreTimer = () => {

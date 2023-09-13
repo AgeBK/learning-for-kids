@@ -16,7 +16,7 @@ function App() {
           <Maths />
           {/* <Timer /> */}
           <Spelling />
-          <Records />
+          {/* <Records /> */}
         </main>
       </div>
     </div>

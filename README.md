@@ -1,6 +1,6 @@
 # Under construction - WIP
 
-# Initial idea
+# Initial idea - 08/09/2023
 
 I was watching my son doing some online learning homework and got the idea to build a kids website where they could improve there Maths and Spelling skills
 
@@ -8,6 +8,7 @@ I want my son to be able to choose between either Maths or spelling, then have a
 
 13/09/2023
 
+- Record component displaying results + styling
 - Added timing functionality
 - Initial work flow (Enter name, answer questions, check answers for questions)
 - Live results from questions answered

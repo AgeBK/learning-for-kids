@@ -1,0 +1,80 @@
+.subCont {
+  font-size: 3rem;
+  background-color: #fff;
+  text-align: center;
+  box-shadow: 2px 6px 6px #000;
+  margin-bottom: 50px;
+  background-color: #fff;
+}
+
+.recordContainer {
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  padding-bottom: 1.5rem;
+}
+
+.hdr {
+  font-size: 4rem;
+}
+
+.recordContainer span {
+  padding: 8px;
+  width: 12%;
+  display: inline-block;
+  /* border: 1px solid #555; */
+}
+
+.recordContainer .dateBtn {
+  background-color: #008000;
+  color: #fff;
+  padding: 5px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.recordHdrs {
+  text-transform: uppercase;
+}
+
+.correct {
+  color: green;
+}
+
+.wrong {
+  color: #f00;
+}
+
+.altRow {
+  background-color: rgb(247, 242, 242);
+}
+
+.records span {
+  background-color: #000;
+  color: #fff;
+}
+
+/* .today {
+  color: blue;
+} */
+
+.btn {
+  background-color: #008000;
+  color: #fff;
+  padding: 10px;
+  font-size: 40px;
+  margin: 0;
+  border-radius: 15px;
+  margin-left: 20px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.champ span {
+  background-color: gold;
+  color: #000;
+  font-weight: bold;
+  font-size: 18px;
+}

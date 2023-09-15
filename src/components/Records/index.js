@@ -1,57 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Records.module.css";
 
-function Records({ props }) {
-  console.log(props);
-  const { results, userName, operation } = props;
+function Records({ position }) {
+  console.log("Records");
+
+  // const [data, setData] = useState([]);
+  const [mathRecords, setMathRecords] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const [orderByDate, setOrderByDate] = useState(false);
+  let records = [...mathRecords];
   let top10Results = [];
 
-  let data = JSON.parse(localStorage.getItem("learning-for-kids")) || [];
-  const currentDate = Date().split(" ").slice(0, 5).toString();
+  console.log(position);
 
-  const sortRecords = (arr) => {
-    return arr
-      .sort((a, b) => (a.correct > b.correct ? -1 : 1))
-      .map((val, ind) => {
-        val.position = ind + 1;
-        return val;
-      }); // TODO: 1 liner for map??
-  };
+  useEffect(() => {
+    console.log("Records UE data");
+    const records = JSON.parse(localStorage.getItem("learning-for-kids")) || [];
+    console.log(records);
+    setMathRecords(records);
+  }, []);
 
-  const currentResults = [
-    {
-      date: currentDate,
-      name: userName,
-      challenge: operation,
-      answered: results.length,
-      correct: results.filter(({ answer, userAnswer }) => answer === userAnswer)
-        .length,
-      wrong: results.filter(({ answer, userAnswer }) => answer !== userAnswer)
-        .length,
-    },
-  ];
+  if (orderByDate) {
+    records = records.sort((a, b) =>
+      Number(new Date(a.date)) - Number(new Date(b.date)) < 0 ? 1 : -1
+    );
+  } else {
+    records = records.sort((a, b) => (a.position - b.position < 0 ? -1 : 1));
+  }
 
-  console.log(currentResults);
-
-  const arr = sortRecords([...data, ...currentResults]);
-  console.log(arr);
-
-  const pos = arr.findIndex((val) => val.date === currentDate);
-  console.log("Postion: " + pos);
-
-  top10Results = arr.filter((_, ind) => ind < 10);
+  top10Results = [...records].filter((_, ind) => ind < 10);
   console.log(top10Results);
-
-  // const onCompleteMusic = new Audio(pos < 10 ? cheer : fail);
-  // onCompleteMusic.play();
-
-  localStorage.setItem("learning-for-kids", JSON.stringify(arr));
-  // localStorage.setItem("learning-for-kids", JSON.stringify(mathRecords));
-
-  data = showAll ? arr : top10Results;
-
-  const sortByDate = () => {};
+  let data = showAll ? records : top10Results;
 
   const FormatDate = ({ date }) => {
     const today = Date().split(" ").slice(1, 4);
@@ -70,7 +49,12 @@ function Records({ props }) {
 
   return (
     <section className={styles.subCont}>
-      <h2 className={styles.hdr}>Records</h2>
+      <h3 className={styles.hdr}>Records</h3>
+      <div className={styles.allTotal}>{<>Total: {data.length} </>}</div>
+      <button className={styles.btn} onClick={() => setShowAll(!showAll)}>
+        {/*// TODO:  */}
+        {showAll ? "Top 10 " : "Show all"}
+      </button>
       <div className={styles.recordContainer}>
         <div className={styles.recordHdrs}>
           <span className={styles.position}>position</span>
@@ -80,7 +64,10 @@ function Records({ props }) {
           <span className={styles.correct}>correct</span>
           <span className={styles.wrong}>wrong</span>
           <span className={styles.date}>
-            <button className={styles.dateBtn} onClick={sortByDate}>
+            <button
+              className={styles.dateBtn}
+              onClick={() => setOrderByDate(!orderByDate)}
+            >
               date
             </button>
           </span>
@@ -94,7 +81,7 @@ function Records({ props }) {
             className={`${styles.records} ${ind === 0 && styles.hdrRow} ${
               ind > 0 && ind % 2 && styles.altRow
             }  ${val.position === 1 && styles.champ} 
-           
+            ${val.position === position && styles.champ} 
             ${ind === 10 && styles.cutOff} ${ind > 9 && styles.cutOff10}`}
           >
             <span className={styles.position}>{val.position}</span>

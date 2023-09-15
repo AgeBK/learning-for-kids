@@ -2,15 +2,23 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import User from "../User";
 import Timer from "../Timer";
 import Records from "../Records";
+import wrong from "../../audio/wrong.mp3";
+import cheer from "../../audio/cheer.mp3";
+import correct from "../../audio/correct.mp3";
+import fail from "../../audio/wah-wah-sad.mp3";
 import styles from "./Maths.module.css";
 
 function Maths() {
+  console.log("Maths");
+
   const [userName, setUserName] = useState("");
   const [step1, setStep1] = useState(false); // step 1: A name must be entered, then timer will display
   const [step2, setStep2] = useState(false); // step 2: Start. After pre-timer (Ready, set, go) runs, the questions will be presented
-  const [step3, setStep3] = useState(false); // step 3: Completed. After normal timer has reached zero
+  const [step3, setStep3] = useState(false); // step 3: Completed. After timer has reached zero, process results, display in Records
   const answerRef = useRef(0); // store users answer
   const [results, setResults] = useState([]); // store questions and answers for current challenge
+  const [finalResults, setFinalResults] = useState([]);
+  const [position, setPosition] = useState(0);
 
   const [operation, setOperation] = useState("Addition");
   const operations = ["Addition", "Subtraction"];
@@ -24,7 +32,7 @@ function Maths() {
     if (step1 && !step2) {
       return (
         <>
-          <h2 className={styles.hdr}>Choose Challenge</h2>
+          <h3 className={styles.hdr}>Choose Challenge</h3>
           <div className={styles.btnCont}>
             {operations.map((val) => (
               <button
@@ -57,9 +65,13 @@ function Maths() {
       default:
         break;
     }
-    console.log([...results, { num1, num2, answer, userAnswer, operation }]);
+
+    const appropriateSound = new Audio(answer === userAnswer ? correct : wrong);
+    appropriateSound.play();
+
+    console.log([...results, { num1, num2, answer, userAnswer }]);
     console.log(num1 + num2 === userAnswer ? "Right" : "Wrong");
-    setResults([...results, { num1, num2, answer, userAnswer, operation }]);
+    setResults([...results, { num1, num2, answer, userAnswer }]);
     answerRef.current = 0;
   };
 
@@ -96,14 +108,14 @@ function Maths() {
     }
   };
 
-  const RenderTimer = ({ props }) => {
-    const timer = (
-      <section className={styles.container}>
-        <Timer props={props} />
-      </section>
-    );
-    return step1 ? timer : null;
-  };
+  // const RenderTimer = ({ props }) => {
+  //   const timer = (
+  //     <section className={styles.container}>
+  //       <Timer props={props} />
+  //     </section>
+  //   );
+  //   return step1 ? timer : null;
+  // };
 
   const Results = () => {
     console.log("Results");
@@ -126,7 +138,6 @@ function Maths() {
             }
           </h4>
         </div>
-
         <div className={styles.resultCont}>
           <br />
           {results.map(({ num1, num2, answer, userAnswer, operation }, ind) => (
@@ -148,18 +159,73 @@ function Maths() {
         </div>
       </section>
     );
-    return step2 ? HTML : null;
+    return step2 && results.length ? HTML : null;
+  };
+
+  //
+  const sortRecords = (arr) => {
+    return arr
+      .sort((a, b) => (a.correct > b.correct ? -1 : 1))
+      .map((val, ind) => {
+        //console.log(val);
+        //console.log(val.position);
+        val.position = ind + 1; // add position for sorting purposes
+        return val;
+      }); // TODO: 1 liner for map??
+  };
+
+  if (step3) {
+    // finalise challenge/update records
+    const records = JSON.parse(localStorage.getItem("learning-for-kids")) || [];
+    const currentDate = Date().split(" ").slice(0, 5).toString(); // 'Thu', 'Sep', '14', '2023','09:39:09'
+    console.log(currentDate);
+
+    const currentResults = {
+      date: currentDate,
+      name: userName,
+      challenge: operation,
+      answered: results.length,
+      correct: results.filter(({ answer, userAnswer }) => answer === userAnswer)
+        .length,
+      wrong: results.filter(({ answer, userAnswer }) => answer !== userAnswer)
+        .length,
+    };
+
+    console.log(currentResults);
+
+    const arr = sortRecords([...records, currentResults]);
+    console.log(arr);
+
+    const position = arr.findIndex((val) => val.date === currentDate);
+    console.log("Postion: " + position);
+
+    // const onCompleteMusic = new Audio(pos < 10 ? cheer : fail);
+    // onCompleteMusic.play();
+
+    localStorage.setItem("learning-for-kids", JSON.stringify(arr));
+    setResults([]);
+    setPosition(position);
+    setStep3(false);
+  }
+
+  const erase = () => {
+    console.log("erase");
+    let mathRecords =
+      JSON.parse(localStorage.getItem("learning-for-kids")) || [];
+
+    mathRecords = mathRecords.filter((val) => val.name !== "Agex");
+    mathRecords = sortRecords(mathRecords);
+    localStorage.setItem("learning-for-kids", JSON.stringify(mathRecords));
+    setPosition(null); // trigger rerender to see update
   };
 
   // const setStep2 = useCallback(() => setStep2, []); TODO:// LOOK into this
 
   return (
     <>
-      {/* {"Step1" + step1}
-      <br />
-      {"Step2" + step2}
-      <br />
-      <hr /> */}
+      {/* <section className={styles.subCont}>
+        {"Step1 " + step1} - {"Step2 " + step2} - {"Step3 " + step3}
+      </section> */}
       <div className={styles.container}>
         <section className={styles.subCont}>
           <h2 className={styles.hdr} onClick={() => setStep1(false)}>
@@ -171,9 +237,13 @@ function Maths() {
           <ChooseOperation />
         </section>
         <RenderQuesiton />
-        <RenderTimer props={{ setStep2, step2, setStep3 }} />
+        <section className={styles.container}>
+          {step1 && <Timer props={{ step2, step3, setStep2, setStep3 }} />}
+        </section>
         <Results />
-        <Records props={{ results, userName, operation }} />
+        {/* <button onClick={erase}></button> */}
+        {/*  TODO: step3? */}
+        <Records position={position} />
       </div>
     </>
   );

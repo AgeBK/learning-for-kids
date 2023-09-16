@@ -1,4 +1,4 @@
-.container {
+/* .container {
   background-color: transparent;
   text-align: center;
   font-size: 3rem;
@@ -6,9 +6,9 @@
   width: 100%;
   /* border: 1px solid #000;
   box-shadow: 2px 2px 2px #000; */
-  /* margin-bottom: 4rem;
-  padding-bottom: 2rem; */
-}
+/* margin-bottom: 4rem;
+  padding-bottom: 2rem; 
+} */
 
 .subCont {
   font-size: 3rem;
@@ -17,6 +17,12 @@
   box-shadow: 2px 6px 6px #000;
   margin-bottom: 2rem;
   background-color: #fff;
+  padding-bottom: 1rem;
+}
+
+.subCont h2 {
+  text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+  line-height: 5rem;
 }
 
 .btnCont {
@@ -49,6 +55,7 @@
 .qstnCont .btn {
   font-size: 2.3rem;
   margin-left: 1rem;
+  vertical-align: middle;
 }
 
 .resultCont {
@@ -56,17 +63,18 @@
   display: flex;
   flex-wrap: wrap;
   text-align: left;
-  padding: 0.5rem;
+  padding: 1rem;
 }
 
 .resultsSubHdrs {
   line-height: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .resultsSubHdrs h4 {
   font-size: 1.5rem;
   display: inline-block;
-  margin: 0 0.5rem;
+  margin: 0 1rem;
 }
 
 .results {

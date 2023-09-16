@@ -7,9 +7,9 @@ function Timer({ props }) {
   console.log("Timer");
   console.log(props);
 
-  const { step2, step3, setStep2, setStep3 } = props;
+  const { step2, step3, setStep2, setStep3, setResults } = props;
 
-  const startTime = 5;
+  const startTime = 500;
   const [time, setTime] = useState(startTime);
   const timeRef = useRef();
   const secs = time % 60;
@@ -20,24 +20,6 @@ function Timer({ props }) {
 
   const [start, setStart] = useState(false);
   const [complete, setComplete] = useState(false);
-
-  // console.log("Timer");
-  // console.log(
-  //   "preStart " +
-  //     preStart +
-  //     " - isPreStart " +
-  //     isPreStart +
-  //     " - start " +
-  //     start +
-  //     " - complete " +
-  //     complete +
-  //     " - time " +
-  //     time +
-  //     " - "
-  // );
-
-  // const [start, setStart] = useState(false);
-  // const [complete, setComplete] = useState(false);
 
   // Workflow
   // =================
@@ -63,7 +45,6 @@ function Timer({ props }) {
 
   useEffect(() => {
     if (complete && step2) {
-      // setStep2/3 need to happen in useEffect
       setStep2(false);
       setStep3(true);
       // setIsPreStart(true); // this does nothing because of parent setstate
@@ -76,6 +57,11 @@ function Timer({ props }) {
     }, 1000);
   };
 
+  if (time === 5) {
+    const appropriateSound = new Audio(fiveLeft);
+    appropriateSound.play();
+  }
+
   if (time === 0 && !complete) {
     // reset variables
     clearInterval(timeRef.current);
@@ -85,16 +71,16 @@ function Timer({ props }) {
     setStart(false);
     setComplete(true);
     setTime(startTime);
-    // can'tdo this here. setting parent/child state at the same time
-    // setStep2(false);
-    // setStep3(true);
   }
 
   const startPreTimer = () => {
     // pre-timer, activates Ready set go countdown
     setIsPreStart(true);
     setComplete(false);
-    //setStep3(false);
+    setResults([]); // Reset previous results
+
+    const appropriateSound = new Audio(startBeeps);
+    appropriateSound.play();
 
     timeRef.current = setInterval(() => {
       setpreStart((prev) => prev + 1);
@@ -114,23 +100,25 @@ function Timer({ props }) {
 
   return (
     <div className={styles.subCont}>
+      <div className={styles.timeCont}>
+        {isPreStart ? (
+          <div className={styles.ready}>
+            {complete ? "Finished!!" : ready[preStart]}
+          </div>
+        ) : (
+          <>
+            <span className={styles.time}>{Math.trunc(time / 60)}</span>
+            <span>:</span>
+            <span className={styles.time}>
+              {secs < 10 && 0}
+              {secs}
+            </span>
+          </>
+        )}
+      </div>
       <button className={styles.btn} onClick={() => startPreTimer(true)}>
         Start
       </button>
-      {isPreStart ? (
-        <div className={styles.ready}>
-          {complete ? "Finished!!" : ready[preStart]}
-        </div>
-      ) : (
-        <div className={styles.timeCont}>
-          <span className={styles.time}>{Math.trunc(time / 60)}</span>
-          <span>:</span>
-          <span className={styles.time}>
-            {secs < 10 && 0}
-            {secs}
-          </span>
-        </div>
-      )}
     </div>
   );
 }

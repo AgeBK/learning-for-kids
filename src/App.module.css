@@ -1,6 +1,6 @@
 .container {
   background: url("./img/numbers.jpg");
-  padding: 100px;
+  padding: 3rem;
   font-family: "Comic Sans MS", "Comic Sans", cursive;
   min-height: 100vh;
 }

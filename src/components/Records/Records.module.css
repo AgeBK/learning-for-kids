@@ -25,14 +25,23 @@
   /* border: 1px solid #555; */
 }
 
-.recordContainer .dateBtn {
-  background-color: #008000;
-  color: #fff;
+.dateBtn {
+  background-color: #fff;
+  color: #008000;
   padding: 5px;
   font-size: 18px;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   cursor: pointer;
   text-transform: uppercase;
+}
+
+.dateBtnOff {
+  background-color: #008000;
+  color: #fff;
+}
+
+.placed {
+  font-size: 1.5rem;
 }
 
 .recordHdrs {
@@ -47,13 +56,13 @@
   color: #f00;
 }
 
-.altRow {
-  background-color: rgb(247, 242, 242);
-}
-
 .records span {
   background-color: #000;
   color: #fff;
+}
+
+.altRow span {
+  background-color: #111;
 }
 
 .allTotal {
@@ -70,4 +79,16 @@
   color: #000;
   font-weight: bold;
   font-size: 18px;
+}
+
+.current span {
+  background-color: green;
+  color: #000;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1200px) {
+  .records span {
+    font-size: 1rem;
+  }
 }

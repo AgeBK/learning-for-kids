@@ -9,6 +9,7 @@ function Records({ position }) {
   const [showAll, setShowAll] = useState(false);
   const [orderByDate, setOrderByDate] = useState(false);
   let records = [...mathRecords];
+  let totalRecords = records.length;
   let top10Results = [];
 
   console.log(position);
@@ -18,7 +19,7 @@ function Records({ position }) {
     const records = JSON.parse(localStorage.getItem("learning-for-kids")) || [];
     console.log(records);
     setMathRecords(records);
-  }, []);
+  }, [position]);
 
   if (orderByDate) {
     records = records.sort((a, b) =>
@@ -27,6 +28,7 @@ function Records({ position }) {
   } else {
     records = records.sort((a, b) => (a.position - b.position < 0 ? -1 : 1));
   }
+  console.log(records);
 
   top10Results = [...records].filter((_, ind) => ind < 10);
   console.log(top10Results);
@@ -50,9 +52,15 @@ function Records({ position }) {
   return (
     <section className={styles.subCont}>
       <h3 className={styles.hdr}>Records</h3>
-      <div className={styles.allTotal}>{<>Total: {data.length} </>}</div>
+      <div className={styles.allTotal}>{<>Total: {totalRecords} </>}</div>
+      {position && (
+        <div className={styles.placed}>
+          You placed <span className={styles.correct}>{position}</span>/
+          {totalRecords}
+        </div>
+      )}
       <button className={styles.btn} onClick={() => setShowAll(!showAll)}>
-        {/*// TODO:  */}
+        {/*  TODO:  */}
         {showAll ? "Top 10 " : "Show all"}
       </button>
       <div className={styles.recordContainer}>
@@ -65,7 +73,9 @@ function Records({ position }) {
           <span className={styles.wrong}>wrong</span>
           <span className={styles.date}>
             <button
-              className={styles.dateBtn}
+              className={`${styles.dateBtn} ${
+                orderByDate && styles.dateBtnOff
+              }`}
               onClick={() => setOrderByDate(!orderByDate)}
             >
               date
@@ -81,8 +91,8 @@ function Records({ position }) {
             className={`${styles.records} ${ind === 0 && styles.hdrRow} ${
               ind > 0 && ind % 2 && styles.altRow
             }  ${val.position === 1 && styles.champ} 
-            ${val.position === position && styles.champ} 
-            ${ind === 10 && styles.cutOff} ${ind > 9 && styles.cutOff10}`}
+            ${val.position === position && styles.current} 
+            ${ind === 10 && styles.cutOff} `}
           >
             <span className={styles.position}>{val.position}</span>
             <span className={styles.cap}>{val.name}</span>

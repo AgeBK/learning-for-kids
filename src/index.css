@@ -49,3 +49,8 @@ button:hover {
   background-color: #008000;
   color: #fff;
 }
+
+hr {
+  padding: 0;
+  margin: 0;
+}

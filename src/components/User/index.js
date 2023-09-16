@@ -25,6 +25,7 @@ const User = ({ props }) => {
         placeholder="Enter name"
         value={userName}
         autoFocus
+        maxLength="10"
       />
       <button
         className={styles.btn}

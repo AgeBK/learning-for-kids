@@ -18,7 +18,7 @@ function Maths() {
   const answerRef = useRef(0); // store users answer
   const [results, setResults] = useState([]); // store questions and answers for current challenge
   const [finalResults, setFinalResults] = useState([]);
-  const [position, setPosition] = useState(0);
+  const [position, setPosition] = useState(null);
 
   const [operation, setOperation] = useState("Addition");
   const operations = ["Addition", "Subtraction"];
@@ -31,7 +31,7 @@ function Maths() {
 
     if (step1 && !step2) {
       return (
-        <>
+        <section className={styles.subCont}>
           <h3 className={styles.hdr}>Choose Challenge</h3>
           <div className={styles.btnCont}>
             {operations.map((val) => (
@@ -46,7 +46,7 @@ function Maths() {
               </button>
             ))}
           </div>
-        </>
+        </section>
       );
     }
     return null;
@@ -75,6 +75,15 @@ function Maths() {
     answerRef.current = 0;
   };
 
+  const RandomColour = ({ children }) => {
+    var numLets = "0123456789ABCDEF";
+    var colour = "#";
+    for (var i = 0; i < 6; i++) {
+      colour += numLets[Math.floor(Math.random() * 16)];
+    }
+    return <span style={{ color: colour }}>{children}</span>;
+  };
+
   const RenderQuesiton = () => {
     console.log("RenderQuestion");
     if (step1 && step2) {
@@ -87,10 +96,10 @@ function Maths() {
         <section className={styles.subCont}>
           <form onSubmit={submit} className={styles.form}>
             <div className={styles.qstnCont}>
-              <span className={styles.num}>{num1 > num2 ? num1 : num2}</span>
-              <span className={styles.operation}>{getSign}</span>
-              <span className={styles.num}>{num1 > num2 ? num2 : num1}</span>
-              <span className={styles.equals}>=</span>
+              <RandomColour>{num1 > num2 ? num1 : num2}</RandomColour>
+              <RandomColour>{getSign}</RandomColour>
+              <RandomColour>{num1 > num2 ? num2 : num1}</RandomColour>
+              <RandomColour>=</RandomColour>
               <input
                 className={styles.input}
                 type="text"
@@ -107,15 +116,6 @@ function Maths() {
       );
     }
   };
-
-  // const RenderTimer = ({ props }) => {
-  //   const timer = (
-  //     <section className={styles.container}>
-  //       <Timer props={props} />
-  //     </section>
-  //   );
-  //   return step1 ? timer : null;
-  // };
 
   const Results = () => {
     console.log("Results");
@@ -138,6 +138,7 @@ function Maths() {
             }
           </h4>
         </div>
+        <hr />
         <div className={styles.resultCont}>
           <br />
           {results.map(({ num1, num2, answer, userAnswer, operation }, ind) => (
@@ -159,7 +160,7 @@ function Maths() {
         </div>
       </section>
     );
-    return step2 && results.length ? HTML : null;
+    return results.length ? HTML : null;
   };
 
   //
@@ -196,15 +197,15 @@ function Maths() {
     const arr = sortRecords([...records, currentResults]);
     console.log(arr);
 
-    const position = arr.findIndex((val) => val.date === currentDate);
-    console.log("Postion: " + position);
+    const currentIndex = arr.findIndex((val) => val.date === currentDate) + 1;
+    console.log("Postion: " + currentIndex);
 
     // const onCompleteMusic = new Audio(pos < 10 ? cheer : fail);
     // onCompleteMusic.play();
 
     localStorage.setItem("learning-for-kids", JSON.stringify(arr));
-    setResults([]);
-    setPosition(position);
+    // setResults([]); removes results, want to do this on start
+    setPosition(currentIndex);
     setStep3(false);
   }
 
@@ -229,20 +230,20 @@ function Maths() {
       <div className={styles.container}>
         <section className={styles.subCont}>
           <h2 className={styles.hdr} onClick={() => setStep1(false)}>
-            {step1 && userName}
+            {step1 &&
+              userName
+                .split("")
+                .map((val) => <RandomColour>{val}</RandomColour>)}
           </h2>
           <User props={{ setUserName, userName, setStep1, step1 }} />
         </section>
-        <section className={styles.subCont}>
-          <ChooseOperation />
-        </section>
+        <ChooseOperation />
         <RenderQuesiton />
-        <section className={styles.container}>
-          {step1 && <Timer props={{ step2, step3, setStep2, setStep3 }} />}
-        </section>
+        {step1 && (
+          <Timer props={{ step2, step3, setStep2, setStep3, setResults }} />
+        )}
         <Results />
         {/* <button onClick={erase}></button> */}
-        {/*  TODO: step3? */}
         <Records position={position} />
       </div>
     </>

@@ -2,6 +2,10 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import User from "../User";
 import Timer from "../Timer";
 import Records from "../Records";
+import Challenge from "../Challenge";
+import { Section } from "../../containers/Section";
+import { RandomColour } from "../../containers/RandomColour";
+
 import wrong from "../../audio/wrong.mp3";
 import cheer from "../../audio/cheer.mp3";
 import correct from "../../audio/correct.mp3";
@@ -15,46 +19,39 @@ function Maths() {
   const [step1, setStep1] = useState(false); // step 1: A name must be entered, then timer will display
   const [step2, setStep2] = useState(false); // step 2: Start. After pre-timer (Ready, set, go) runs, the questions will be presented
   const [step3, setStep3] = useState(false); // step 3: Completed. After timer has reached zero, process results, display in Records
+  const [operation, setOperation] = useState("Addition");
   const answerRef = useRef(0); // store users answer
   const [results, setResults] = useState([]); // store questions and answers for current challenge
-  const [finalResults, setFinalResults] = useState([]);
   const [position, setPosition] = useState(null);
 
-  const [operation, setOperation] = useState("Addition");
-  const operations = ["Addition", "Subtraction"];
   const maxNum = 20;
   const randomNumber = () => Math.round(Math.random() * maxNum);
   const getSign = operation === "Addition" ? "+" : "-";
 
-  const ChooseOperation = () => {
-    console.log("ChooseOperation");
+  //   const Challenge = () => (
+  //   //   <Section>
+  //   //     <h3 className={styles.hdr}>Choose Challenge</h3>
+  //   //     <div className={styles.btnCont}>
+  //   //       {operations.map((val) => (
+  //   //         <button
+  //   //           className={`${styles.btn} ${val === operation && styles.chosen}`}
+  //   //           onClick={() => setOperation(val)}
+  //   //           key={val}
+  //   //         >
+  //   //           {val}
+  //   //         </button>
+  //   //       ))}
+  //   //     </div>
+  //   //   </Section>
+  //   // );
 
-    if (step1 && !step2) {
-      return (
-        <section className={styles.subCont}>
-          <h3 className={styles.hdr}>Choose Challenge</h3>
-          <div className={styles.btnCont}>
-            {operations.map((val) => (
-              <button
-                className={`${styles.btn} ${
-                  val === operation && styles.chosen
-                }`}
-                onClick={() => setOperation(val)}
-                key={val}
-              >
-                {val}
-              </button>
-            ))}
-          </div>
-        </section>
-      );
-    }
-    return null;
-  };
+  //   // return step1 && !step2 ? <Challenge /> : null;
+  // };
 
   const submit = (num1, num2) => {
     const userAnswer = Number(answerRef.current.value);
     let answer = 0;
+
     switch (operation) {
       case "Addition":
         answer = num1 + num2;
@@ -75,15 +72,6 @@ function Maths() {
     answerRef.current = 0;
   };
 
-  const RandomColour = ({ children }) => {
-    var numLets = "0123456789ABCDEF";
-    var colour = "#";
-    for (var i = 0; i < 6; i++) {
-      colour += numLets[Math.floor(Math.random() * 16)];
-    }
-    return <span style={{ color: colour }}>{children}</span>;
-  };
-
   const RenderQuesiton = () => {
     console.log("RenderQuestion");
     if (step1 && step2) {
@@ -93,7 +81,7 @@ function Maths() {
       // const answer = checkAnswer();
 
       return (
-        <section className={styles.subCont}>
+        <Section>
           <form onSubmit={submit} className={styles.form}>
             <div className={styles.qstnCont}>
               <RandomColour>{num1 > num2 ? num1 : num2}</RandomColour>
@@ -112,31 +100,27 @@ function Maths() {
               </button>
             </div>
           </form>
-        </section>
+        </Section>
       );
     }
   };
 
   const Results = () => {
     console.log("Results");
+    const total = results.length;
+    const correct = results.filter(
+      ({ answer, userAnswer }) => answer === userAnswer
+    ).length;
+    const wrong = total - correct;
+    const percent = Math.round((correct / total) * 100);
     const HTML = (
-      <section className={styles.subCont}>
+      <Section>
         <h3 className={styles.resultsHdr}>Results</h3>
         <div className={styles.resultsSubHdrs}>
-          <h4 className={styles.correct}>
-            Correct:
-            {
-              results.filter(({ answer, userAnswer }) => answer === userAnswer)
-                .length
-            }
-          </h4>
-          <h4 className={styles.wrong}>
-            Wrong:
-            {
-              results.filter(({ answer, userAnswer }) => answer !== userAnswer)
-                .length
-            }
-          </h4>
+          <h4 className={styles.answered}>Answered: {results.length}</h4>
+          <h4 className={styles.correct}>Correct: {correct}</h4>
+          <h4 className={styles.wrong}>Wrong: {wrong}</h4>
+          <h4 className={styles.percent}>({percent}%)</h4>
         </div>
         <hr />
         <div className={styles.resultCont}>
@@ -158,7 +142,7 @@ function Maths() {
             </div>
           ))}
         </div>
-      </section>
+      </Section>
     );
     return results.length ? HTML : null;
   };
@@ -168,8 +152,6 @@ function Maths() {
     return arr
       .sort((a, b) => (a.correct > b.correct ? -1 : 1))
       .map((val, ind) => {
-        //console.log(val);
-        //console.log(val.position);
         val.position = ind + 1; // add position for sorting purposes
         return val;
       }); // TODO: 1 liner for map??
@@ -197,15 +179,14 @@ function Maths() {
     const arr = sortRecords([...records, currentResults]);
     console.log(arr);
 
-    const currentIndex = arr.findIndex((val) => val.date === currentDate) + 1;
-    console.log("Postion: " + currentIndex);
+    const position = arr.findIndex((val) => val.date === currentDate) + 1;
+    console.log("Postion: " + position);
 
     // const onCompleteMusic = new Audio(pos < 10 ? cheer : fail);
     // onCompleteMusic.play();
 
     localStorage.setItem("learning-for-kids", JSON.stringify(arr));
-    // setResults([]); removes results, want to do this on start
-    setPosition(currentIndex);
+    setPosition(position);
     setStep3(false);
   }
 
@@ -224,24 +205,15 @@ function Maths() {
 
   return (
     <>
-      {/* <section className={styles.subCont}>
-        {"Step1 " + step1} - {"Step2 " + step2} - {"Step3 " + step3}
-      </section> */}
       <div className={styles.container}>
-        <section className={styles.subCont}>
-          <h2 className={styles.hdr} onClick={() => setStep1(false)}>
-            {step1 &&
-              userName
-                .split("")
-                .map((val) => <RandomColour>{val}</RandomColour>)}
-          </h2>
-          <User props={{ setUserName, userName, setStep1, step1 }} />
-        </section>
-        <ChooseOperation />
+        <User
+          props={{ setUserName, userName, setStep1, step1, RandomColour }}
+        />
+        <Challenge props={{ step1, step2, operation, setOperation }} />
         <RenderQuesiton />
-        {step1 && (
-          <Timer props={{ step2, step3, setStep2, setStep3, setResults }} />
-        )}
+        <Timer
+          props={{ step1, step2, step3, setStep2, setStep3, setResults }}
+        />
         <Results />
         {/* <button onClick={erase}></button> */}
         <Records position={position} />

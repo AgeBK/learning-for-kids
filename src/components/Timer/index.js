@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
+import { RandomColour } from "../../containers/RandomColour";
+
 import startBeeps from "../../audio/countdownStart.mp3";
 import fiveLeft from "../../audio/5toGo.mp3";
 import styles from "./Timer.module.css";
@@ -7,9 +9,9 @@ function Timer({ props }) {
   console.log("Timer");
   console.log(props);
 
-  const { step2, step3, setStep2, setStep3, setResults } = props;
+  const { step1, step2, setStep2, setStep3, setResults } = props;
 
-  const startTime = 500;
+  const startTime = 6;
   const [time, setTime] = useState(startTime);
   const timeRef = useRef();
   const secs = time % 60;
@@ -32,7 +34,7 @@ function Timer({ props }) {
   useEffect(() => {
     // 1: need UE to set state in parent
     if (start && !step2) {
-      setStep2(true); // when this fires, start will be set to false (can't start timer here so in UE below)
+      setStep2(true); // when this fires, start will be set to false (can't start timer here so in UE below) ???
     }
   }, [start, step2, setStep2]);
 
@@ -47,7 +49,6 @@ function Timer({ props }) {
     if (complete && step2) {
       setStep2(false);
       setStep3(true);
-      // setIsPreStart(true); // this does nothing because of parent setstate
     }
   }, [complete, step2, setStep2, setStep3]);
 
@@ -57,9 +58,9 @@ function Timer({ props }) {
     }, 1000);
   };
 
-  if (time === 5) {
-    const appropriateSound = new Audio(fiveLeft);
-    appropriateSound.play();
+  if (time === 5 && step2) {
+    const fiveSecsToGo = new Audio(fiveLeft);
+    fiveSecsToGo.play();
   }
 
   if (time === 0 && !complete) {
@@ -98,20 +99,27 @@ function Timer({ props }) {
     setStart(true);
   }
 
-  return (
+  const Finished = () =>
+    "Finished!!"
+      .split("")
+      .map((val, ind) => <RandomColour key={ind}>{val}</RandomColour>);
+
+  const Time = () => (
     <div className={styles.subCont}>
       <div className={styles.timeCont}>
         {isPreStart ? (
           <div className={styles.ready}>
-            {complete ? "Finished!!" : ready[preStart]}
+            {complete ? <Finished /> : ready[preStart]}
           </div>
         ) : (
           <>
-            <span className={styles.time}>{Math.trunc(time / 60)}</span>
+            <span className={styles.time}>
+              <RandomColour>{Math.trunc(time / 60)}</RandomColour>
+            </span>
             <span>:</span>
             <span className={styles.time}>
-              {secs < 10 && 0}
-              {secs}
+              <RandomColour>{secs < 10 && 0}</RandomColour>
+              <RandomColour>{secs}</RandomColour>
             </span>
           </>
         )}
@@ -121,6 +129,8 @@ function Timer({ props }) {
       </button>
     </div>
   );
+
+  return step1 ? <Time /> : null;
 }
 
 export default Timer;

@@ -1,8 +1,9 @@
 import React from "react";
-import styles from "./User.module.css";
+import { Section } from "../../containers/Section";
+// import styles from "./User.module.css";
 
 const User = ({ props }) => {
-  const { setUserName, userName, setStep1, step1 } = props;
+  const { setUserName, userName, setStep1, step1, RandomColour } = props;
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && userName.length > 0) {
@@ -15,10 +16,20 @@ const User = ({ props }) => {
     setUserName(value[0].toUpperCase() + value.slice(1));
   };
 
-  const user = (
-    <div className={styles.container}>
+  const Header = (
+    <Section>
+      <h2 onClick={() => setStep1(false)}>
+        {step1 &&
+          userName
+            .split("")
+            .map((val, ind) => <RandomColour key={ind}>{val}</RandomColour>)}
+      </h2>
+    </Section>
+  );
+
+  const User = (
+    <Section>
       <input
-        className={styles.input}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         type="text"
@@ -27,16 +38,11 @@ const User = ({ props }) => {
         autoFocus
         maxLength="10"
       />
-      <button
-        className={styles.btn}
-        onClick={() => userName.length && setStep1(true)}
-      >
-        Enter
-      </button>
-    </div>
+      <button onClick={() => userName.length && setStep1(true)}>Enter</button>
+    </Section>
   );
 
-  return !step1 ? user : null;
+  return step1 ? Header : User;
 };
 
 export default User;

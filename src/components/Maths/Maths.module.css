@@ -1,37 +1,5 @@
-/* .container {
-  background-color: transparent;
-  text-align: center;
-  font-size: 3rem;
-  display: block;
-  width: 100%;
-  /* border: 1px solid #000;
-  box-shadow: 2px 2px 2px #000; */
-/* margin-bottom: 4rem;
-  padding-bottom: 2rem; 
-} */
-
-.subCont {
-  font-size: 3rem;
-  background-color: #fff;
-  text-align: center;
-  box-shadow: 2px 6px 6px #000;
-  margin-bottom: 2rem;
-  background-color: #fff;
-  padding-bottom: 1rem;
-}
-
-.subCont h2 {
-  text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
-  line-height: 5rem;
-}
-
 .btnCont {
   padding-bottom: 1rem;
-}
-
-.chosen {
-  background-color: #008000;
-  color: #fff;
 }
 
 .qstnCont {
@@ -64,6 +32,7 @@
   flex-wrap: wrap;
   text-align: left;
   padding: 1rem;
+  justify-content: center;
 }
 
 .resultsSubHdrs {
@@ -98,6 +67,10 @@
 
 .wrong {
   color: #f00;
+}
+
+.percent {
+  color: #6e6c6c;
 }
 
 ::placeholder {

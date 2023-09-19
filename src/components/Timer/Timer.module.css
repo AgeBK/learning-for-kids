@@ -1,6 +1,4 @@
-
-
-.subCont {
+/* .subCont {
   font-weight: bold;
   background-color: #fff;
   text-align: center;
@@ -8,8 +6,24 @@
   margin-bottom: 2rem;
   background-color: #fff;
   padding-bottom: 1rem;
+} */
+
+.timeCont {
+  font-size: 6rem;
+  font-weight: bold;
 }
 
-.timeCont  {
-  font-size: 6rem;
+.reset {
+  color: #f00;
+}
+
+.reset:hover {
+  color: #fff;
+  background-color: #f00;
+}
+
+@media screen and (max-width: 50rem) {
+  .timeCont {
+    font-size: 4rem;
+  }
 }

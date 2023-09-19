@@ -77,3 +77,13 @@
   /* Most modern browsers support this now. */
   color: #d3d3d3;
 }
+
+@media screen and (max-width: 50rem) {
+  .results {
+    flex: 0 0 50%;
+  }
+
+  .results span {
+    font-size: 1.2rem;
+  }
+}

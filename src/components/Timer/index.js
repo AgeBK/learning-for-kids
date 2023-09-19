@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { Section } from "../../containers/Section";
 import { RandomColour } from "../../containers/RandomColour";
 
 import startBeeps from "../../audio/countdownStart.mp3";
@@ -11,7 +12,7 @@ function Timer({ props }) {
 
   const { step1, step2, setStep2, setStep3, setResults } = props;
 
-  const startTime = 6;
+  const startTime = 10;
   const [time, setTime] = useState(startTime);
   const timeRef = useRef();
   const secs = time % 60;
@@ -63,15 +64,25 @@ function Timer({ props }) {
     fiveSecsToGo.play();
   }
 
-  if (time === 0 && !complete) {
-    // reset variables
+  const reset = () => {
+    // get rid of results (don't save to records)
+    setResults([]);
+    resetVariables();
+  };
+
+  const resetVariables = () => {
+    // reset challenge variables ready to start again
     clearInterval(timeRef.current);
     timeRef.current = null;
 
+    setComplete(true);
     setIsPreStart(true);
     setStart(false);
-    setComplete(true);
     setTime(startTime);
+  };
+
+  if (time === 0 && !complete) {
+    resetVariables();
   }
 
   const startPreTimer = () => {
@@ -99,17 +110,20 @@ function Timer({ props }) {
     setStart(true);
   }
 
-  const Finished = () =>
-    "Finished!!"
-      .split("")
-      .map((val, ind) => <RandomColour key={ind}>{val}</RandomColour>);
+  const Finished = () => <RandomColour>Finished!!</RandomColour>;
 
   const Time = () => (
     <div className={styles.subCont}>
       <div className={styles.timeCont}>
         {isPreStart ? (
           <div className={styles.ready}>
-            {complete ? <Finished /> : ready[preStart]}
+            {complete ? (
+              <Finished />
+            ) : (
+              [...ready[preStart]].map((val, ind) => (
+                <RandomColour key={ind}>{val}</RandomColour>
+              ))
+            )}
           </div>
         ) : (
           <>
@@ -118,19 +132,29 @@ function Timer({ props }) {
             </span>
             <span>:</span>
             <span className={styles.time}>
-              <RandomColour>{secs < 10 && 0}</RandomColour>
+              {secs < 10 && <RandomColour>0</RandomColour>}
               <RandomColour>{secs}</RandomColour>
             </span>
           </>
         )}
       </div>
-      <button className={styles.btn} onClick={() => startPreTimer(true)}>
-        Start
-      </button>
+      {start ? (
+        <button className={`${styles.btn} ${styles.reset}`} onClick={reset}>
+          Reset
+        </button>
+      ) : (
+        <button className={styles.btn} onClick={startPreTimer}>
+          Start
+        </button>
+      )}
     </div>
   );
 
-  return step1 ? <Time /> : null;
+  return step1 ? (
+    <Section>
+      <Time />
+    </Section>
+  ) : null;
 }
 
 export default Timer;

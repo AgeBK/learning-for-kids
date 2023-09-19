@@ -61,7 +61,7 @@
   color: #fff;
 }
 
-.altRow span {
+.records:nth-child(even) span {
   background-color: #111;
 }
 
@@ -70,20 +70,21 @@
   font-size: 1rem;
 }
 
-/* .today {
-  color: blue;
-} */
+.today {
+  color: #008000;
+}
 
-.champ span {
+.records.champ span {
   background-color: gold;
   color: #000;
   font-weight: bold;
   font-size: 18px;
 }
 
-.current span {
+.records.current span div.today {
   background-color: green;
   color: #000;
+  
   font-weight: bold;
 }
 

@@ -19,10 +19,7 @@ const User = ({ props }) => {
   const Header = (
     <Section>
       <h2 onClick={() => setStep1(false)}>
-        {step1 &&
-          userName
-            .split("")
-            .map((val, ind) => <RandomColour key={ind}>{val}</RandomColour>)}
+        <RandomColour>{userName}</RandomColour>
       </h2>
     </Section>
   );

@@ -25,31 +25,11 @@ function Maths() {
   const [position, setPosition] = useState(null);
 
   const maxNum = 20;
-  const randomNumber = () => Math.round(Math.random() * maxNum);
+  const randomNumber = () => Math.floor(Math.random() * maxNum);
   const getSign = operation === "Addition" ? "+" : "-";
 
-  //   const Challenge = () => (
-  //   //   <Section>
-  //   //     <h3 className={styles.hdr}>Choose Challenge</h3>
-  //   //     <div className={styles.btnCont}>
-  //   //       {operations.map((val) => (
-  //   //         <button
-  //   //           className={`${styles.btn} ${val === operation && styles.chosen}`}
-  //   //           onClick={() => setOperation(val)}
-  //   //           key={val}
-  //   //         >
-  //   //           {val}
-  //   //         </button>
-  //   //       ))}
-  //   //     </div>
-  //   //   </Section>
-  //   // );
-
-  //   // return step1 && !step2 ? <Challenge /> : null;
-  // };
-
   const submit = (num1, num2) => {
-    const userAnswer = Number(answerRef.current.value);
+    const userAnswer = Number(answerRef.current.value); // TODO: ? value, dot things?
     let answer = 0;
 
     switch (operation) {
@@ -75,10 +55,8 @@ function Maths() {
   const RenderQuesiton = () => {
     console.log("RenderQuestion");
     if (step1 && step2) {
-      // if (step1 && true) {
       const num1 = randomNumber();
       const num2 = randomNumber();
-      // const answer = checkAnswer();
 
       return (
         <Section>
@@ -137,7 +115,10 @@ function Maths() {
                   userAnswer === answer ? styles.correct : styles.wrong
                 }
               >
-                {userAnswer}
+                {userAnswer}{" "}
+                {userAnswer !== answer && (
+                  <span className={styles.correct}>({answer})</span>
+                )}
               </span>
             </div>
           ))}
@@ -158,35 +139,44 @@ function Maths() {
   };
 
   if (step3) {
-    // finalise challenge/update records
-    const records = JSON.parse(localStorage.getItem("learning-for-kids")) || [];
-    const currentDate = Date().split(" ").slice(0, 5).toString(); // 'Thu', 'Sep', '14', '2023','09:39:09'
-    console.log(currentDate);
+    // finalise challenge/update records/don't bother if no results
+    console.log(results.length);
+    let pos = null;
+    if (results.length) {
+      console.log("Step 3 and Results");
+      const records =
+        JSON.parse(localStorage.getItem("learning-for-kids")) || [];
+      const currentDate = Date().split(" ").slice(0, 5).toString(); // 'Thu', 'Sep', '14', '2023','09:39:09'
+      console.log(currentDate);
 
-    const currentResults = {
-      date: currentDate,
-      name: userName,
-      challenge: operation,
-      answered: results.length,
-      correct: results.filter(({ answer, userAnswer }) => answer === userAnswer)
-        .length,
-      wrong: results.filter(({ answer, userAnswer }) => answer !== userAnswer)
-        .length,
-    };
+      const currentResults = {
+        date: currentDate,
+        name: userName,
+        challenge: operation,
+        answered: results.length,
+        correct: results.filter(
+          ({ answer, userAnswer }) => answer === userAnswer
+        ).length,
+        wrong: results.filter(({ answer, userAnswer }) => answer !== userAnswer)
+          .length,
+      };
 
-    console.log(currentResults);
+      console.log(currentResults);
 
-    const arr = sortRecords([...records, currentResults]);
-    console.log(arr);
+      const arr = sortRecords([...records, currentResults]);
+      console.log(arr);
 
-    const position = arr.findIndex((val) => val.date === currentDate) + 1;
-    console.log("Postion: " + position);
+      pos = arr.findIndex((val) => val.date === currentDate) + 1;
+      console.log("Postion: " + pos);
 
-    // const onCompleteMusic = new Audio(pos < 10 ? cheer : fail);
-    // onCompleteMusic.play();
+      // const onCompleteMusic = new Audio(pos < 10 ? cheer : fail);
+      // onCompleteMusic.play();
 
-    localStorage.setItem("learning-for-kids", JSON.stringify(arr));
-    setPosition(position);
+      localStorage.setItem("learning-for-kids", JSON.stringify(arr));
+    }
+
+    // if user clicked reset button, need to reset position and step3
+    setPosition(pos);
     setStep3(false);
   }
 
@@ -195,7 +185,7 @@ function Maths() {
     let mathRecords =
       JSON.parse(localStorage.getItem("learning-for-kids")) || [];
 
-    mathRecords = mathRecords.filter((val) => val.name !== "Agex");
+    mathRecords = mathRecords.filter((val) => val.name !== "Age");
     mathRecords = sortRecords(mathRecords);
     localStorage.setItem("learning-for-kids", JSON.stringify(mathRecords));
     setPosition(null); // trigger rerender to see update

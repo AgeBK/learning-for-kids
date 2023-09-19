@@ -84,13 +84,14 @@ function Records({ position }) {
         </div>
 
         {/* ${val.date === recordDate && styles.current} */}
+        {/* ${ind > 0 && ind % 2 && styles.altRow}  */}
 
         {data?.map((val, ind) => (
           <div
             key={ind}
-            className={`${styles.records} ${ind === 0 && styles.hdrRow} ${
-              ind > 0 && ind % 2 && styles.altRow
-            }  ${val.position === 1 && styles.champ} 
+            className={`${styles.records} ${ind === 0 && styles.hdrRow}
+            
+             ${val.position === 1 && styles.champ} 
             ${val.position === position && styles.current} 
             ${ind === 10 && styles.cutOff} `}
           >

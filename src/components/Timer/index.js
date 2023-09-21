@@ -1,20 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Section } from "../../containers/Section";
 import { RandomColour } from "../../containers/RandomColour";
-
 import startBeeps from "../../audio/countdownStart.mp3";
 import fiveLeft from "../../audio/5toGo.mp3";
 import styles from "./Timer.module.css";
 
 function Timer({ props }) {
   console.log("Timer");
-  console.log(props);
 
   const { step1, step2, setStep2, setStep3, setResults } = props;
-
-  const startTime = 10;
+  const startTime = 11;
   const [time, setTime] = useState(startTime);
   const timeRef = useRef();
+  const countRef = useRef(startTime);
   const secs = time % 60;
 
   const [preStart, setpreStart] = useState(0);
@@ -32,40 +30,33 @@ function Timer({ props }) {
   // step2 = true, start timer for questions
   // timer = 0, display finished, setStep2(false), setStep3(true) (step3 in parent, complete stage of workflow)
 
+  const checkTimer = () => {
+    --countRef.current;
+    let count = countRef.current;
+    console.log(count);
+
+    if (count === 5) {
+      const fiveSecsToGo = new Audio(fiveLeft);
+      fiveSecsToGo.play();
+    }
+
+    count === 0 && resetVariables();
+  };
+
   useEffect(() => {
-    // 1: need UE to set state in parent
+    // set steps 2/3 here: get warnings in synchronous functions
     if (start && !step2) {
-      setStep2(true); // when this fires, start will be set to false (can't start timer here so in UE below) ???
+      setStep2(true);
     }
-  }, [start, step2, setStep2]);
 
-  useEffect(() => {
-    // 2: need to start timer after setting step 2 (can't render parent and child at the same time)
-    if (time === startTime && step2 && !complete) {
-      startTimer();
-    }
-  }, [step2, time, complete]);
-
-  useEffect(() => {
     if (complete && step2) {
       setStep2(false);
       setStep3(true);
     }
-  }, [complete, step2, setStep2, setStep3]);
-
-  const startTimer = () => {
-    timeRef.current = setInterval(() => {
-      setTime((prev) => prev - 1);
-    }, 1000);
-  };
-
-  if (time === 5 && step2) {
-    const fiveSecsToGo = new Audio(fiveLeft);
-    fiveSecsToGo.play();
-  }
+  }, [start, complete, step2, setStep2, setStep3]);
 
   const reset = () => {
-    // get rid of results (don't save to records)
+    // clear results (don't save to records)
     setResults([]);
     resetVariables();
   };
@@ -75,21 +66,25 @@ function Timer({ props }) {
     clearInterval(timeRef.current);
     timeRef.current = null;
 
+    countRef.current = startTime;
     setComplete(true);
     setIsPreStart(true);
     setStart(false);
     setTime(startTime);
   };
 
-  if (time === 0 && !complete) {
-    resetVariables();
-  }
+  const startTimer = () => {
+    timeRef.current = setInterval(() => {
+      setTime((prev) => prev - 1);
+      checkTimer();
+    }, 1000);
+  };
 
   const startPreTimer = () => {
-    // pre-timer, activates Ready set go countdown
+    // pre-timer, activates Ready Set Go countdown
     setIsPreStart(true);
     setComplete(false);
-    setResults([]); // Reset previous results
+    setResults([]); // Reset previous results here
 
     const appropriateSound = new Audio(startBeeps);
     appropriateSound.play();
@@ -101,16 +96,15 @@ function Timer({ props }) {
 
   if (preStart === ready.length) {
     // pre-timer finished
-    // set variables for challenge (step 2) - initiate countdown for quesitons
+    // set variables for challenge (step 2) - start countdown for quesitons
     clearInterval(timeRef.current);
     timeRef.current = null;
 
     setIsPreStart(false);
     setpreStart(0);
     setStart(true);
+    startTimer();
   }
-
-  const Finished = () => <RandomColour>Finished!!</RandomColour>;
 
   const Time = () => (
     <div className={styles.subCont}>
@@ -118,11 +112,9 @@ function Timer({ props }) {
         {isPreStart ? (
           <div className={styles.ready}>
             {complete ? (
-              <Finished />
+              <RandomColour>Finished!!</RandomColour>
             ) : (
-              [...ready[preStart]].map((val, ind) => (
-                <RandomColour key={ind}>{val}</RandomColour>
-              ))
+              <RandomColour>{ready[preStart]}</RandomColour>
             )}
           </div>
         ) : (
@@ -132,8 +124,7 @@ function Timer({ props }) {
             </span>
             <span>:</span>
             <span className={styles.time}>
-              {secs < 10 && <RandomColour>0</RandomColour>}
-              <RandomColour>{secs}</RandomColour>
+              <RandomColour>{secs.toString().padStart(2, "0")}</RandomColour>
             </span>
           </>
         )}

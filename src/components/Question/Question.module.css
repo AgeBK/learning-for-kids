@@ -1,0 +1,23 @@
+.qstnCont {
+  font-size: 6rem;
+  font-weight: bold;
+  text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+  display: inline-block;
+  margin: 5px;
+}
+
+.qstnCont span {
+  /* padding: 1rem; */
+}
+
+.qstnCont .input {
+  width: 8rem;
+  font-size: 6rem;
+  font-weight: bold;
+}
+
+.qstnCont .btn {
+  font-size: 2.3rem;
+  margin-left: 1rem;
+  vertical-align: middle;
+}

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import styles from "./Records.module.css";
 
 function Records({ position }) {
   console.log("Records");
 
-  // const [data, setData] = useState([]);
   const [mathRecords, setMathRecords] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const [orderByDate, setOrderByDate] = useState(false);
@@ -36,17 +35,15 @@ function Records({ position }) {
 
   const FormatDate = ({ date }) => {
     const today = Date().split(" ").slice(1, 4);
-    const fmtDate = `${today[1]} ${today[0]} ${today[2]}`;
-
+    const fmtTodayStr = `${today[1]} ${today[0]} ${today[2]}`;
     const dtArr = date.split(",");
-    if (fmtDate === `${dtArr[2]} ${dtArr[1]} ${dtArr[3]}`) {
-      return (
-        <div className={styles.today}>
-          {`${dtArr[2]} ${dtArr[1]} ${dtArr[3]}`}
-        </div>
-      );
-    }
-    return `${dtArr[2]} ${dtArr[1]} ${dtArr[3]}`;
+    const dtStr = `${dtArr[2]} ${dtArr[1]} ${dtArr[3]}`;
+
+    return fmtTodayStr === dtStr ? (
+      <div className={styles.today}>{dtStr}</div>
+    ) : (
+      dtStr
+    );
   };
 
   return (
@@ -83,15 +80,12 @@ function Records({ position }) {
           </span>
         </div>
 
-        {/* ${val.date === recordDate && styles.current} */}
-        {/* ${ind > 0 && ind % 2 && styles.altRow}  */}
-
         {data?.map((val, ind) => (
           <div
             key={ind}
-            className={`${styles.records} ${ind === 0 && styles.hdrRow}
-            
-             ${val.position === 1 && styles.champ} 
+            className={`${styles.records} 
+            ${ind === 0 && styles.hdrRow}            
+            ${val.position === 1 && styles.champ} 
             ${val.position === position && styles.current} 
             ${ind === 10 && styles.cutOff} `}
           >
@@ -111,4 +105,4 @@ function Records({ position }) {
   );
 }
 
-export default React.memo(Records);
+export default memo(Records);

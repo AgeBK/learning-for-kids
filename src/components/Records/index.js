@@ -1,4 +1,6 @@
 import React, { useState, useEffect, memo } from "react";
+import { Button } from "../../containers/Button";
+import { Section } from "../../containers/Section";
 import styles from "./Records.module.css";
 
 function Records({ position }) {
@@ -27,15 +29,13 @@ function Records({ position }) {
   } else {
     records = records.sort((a, b) => (a.position - b.position < 0 ? -1 : 1));
   }
-  console.log(records);
 
   top10Results = [...records].filter((_, ind) => ind < 10);
-  console.log(top10Results);
   let data = showAll ? records : top10Results;
 
   const FormatDate = ({ date }) => {
-    const today = Date().split(" ").slice(1, 4);
-    const fmtTodayStr = `${today[1]} ${today[0]} ${today[2]}`;
+    const todayArr = Date().split(" ").slice(1, 4);
+    const fmtTodayStr = `${todayArr[1]} ${todayArr[0]} ${todayArr[2]}`;
     const dtArr = date.split(",");
     const dtStr = `${dtArr[2]} ${dtArr[1]} ${dtArr[3]}`;
 
@@ -47,7 +47,7 @@ function Records({ position }) {
   };
 
   return (
-    <section className={styles.subCont}>
+    <Section>
       <h3 className={styles.hdr}>Records</h3>
       <div className={styles.allTotal}>{<>Total: {totalRecords} </>}</div>
       {position && (
@@ -56,10 +56,9 @@ function Records({ position }) {
           {totalRecords}
         </div>
       )}
-      <button className={styles.btn} onClick={() => setShowAll(!showAll)}>
-        {/*  TODO:  */}
+      <Button onClick={() => setShowAll(!showAll)} css={styles.btn}>
         {showAll ? "Top 10 " : "Show all"}
-      </button>
+      </Button>
       <div className={styles.recordContainer}>
         <div className={styles.recordHdrs}>
           <span className={styles.position}>position</span>
@@ -69,14 +68,12 @@ function Records({ position }) {
           <span className={styles.correct}>correct</span>
           <span className={styles.wrong}>wrong</span>
           <span className={styles.date}>
-            <button
-              className={`${styles.dateBtn} ${
-                orderByDate && styles.dateBtnOff
-              }`}
+            <Button
+              css={orderByDate ? "recordDateBtnOff" : "recordDateBtn"}
               onClick={() => setOrderByDate(!orderByDate)}
             >
               date
-            </button>
+            </Button>
           </span>
         </div>
 
@@ -90,8 +87,8 @@ function Records({ position }) {
             ${ind === 10 && styles.cutOff} `}
           >
             <span className={styles.position}>{val.position}</span>
-            <span className={styles.cap}>{val.name}</span>
-            <span className={styles.cap}>{val.challenge}</span>
+            <span className={styles.name}>{val.name}</span>
+            <span className={styles.challenge}>{val.challenge}</span>
             <span className={styles.answered}>{val.answered}</span>
             <span className={styles.correct}>{val.correct}</span>
             <span className={styles.wrong}>{val.wrong}</span>
@@ -101,7 +98,7 @@ function Records({ position }) {
           </div>
         ))}
       </div>
-    </section>
+    </Section>
   );
 }
 

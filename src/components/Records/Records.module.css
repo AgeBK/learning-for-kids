@@ -1,12 +1,3 @@
-.subCont {
-  font-size: 3rem;
-  background-color: #fff;
-  text-align: center;
-  box-shadow: 2px 6px 6px #000;
-  margin-bottom: 2rem;
-  background-color: #fff;
-}
-
 .recordContainer {
   display: flex;
   flex-direction: column;
@@ -22,22 +13,7 @@
   padding: 8px;
   width: 12%;
   display: inline-block;
-  /* border: 1px solid #555; */
-}
-
-.dateBtn {
-  background-color: #fff;
-  color: #008000;
-  padding: 5px;
-  font-size: 18px;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  text-transform: uppercase;
-}
-
-.dateBtnOff {
-  background-color: #008000;
-  color: #fff;
+  font-size: 1.2rem;
 }
 
 .placed {
@@ -77,19 +53,56 @@
 .records.champ span {
   background-color: gold;
   color: #000;
-  font-weight: bold;
-  font-size: 18px;
 }
 
-.records.current span div.today {
+.records.current span {
   background-color: green;
   color: #000;
-  
-  font-weight: bold;
 }
 
-@media screen and (max-width: 1200px) {
+.current .today {
+  color: #000;
+}
+
+@media screen and (max-width: 70rem) {
   .records span {
     font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 60rem) {
+  .recordContainer span {
+    width: 14%;
+  }
+  .recordContainer span.answered {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 50rem) {
+  .hdr {
+    font-size: 3rem;
+  }
+  .recordContainer span {
+    width: 17%;
+  }
+
+  .recordContainer span.wrong {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 45rem) {
+  .recordContainer span {
+    width: 27%;
+  }
+
+  .recordContainer span.challenge,
+  .recordContainer span.date {
+    display: none;
+  }
+
+  .recordHdrs span {
+    font-size: 0.9rem;
   }
 }

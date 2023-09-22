@@ -6,18 +6,29 @@
   margin: 5px;
 }
 
-.qstnCont span {
-  /* padding: 1rem; */
-}
-
-.qstnCont .input {
+.input {
   width: 8rem;
   font-size: 6rem;
   font-weight: bold;
 }
 
-.qstnCont .btn {
-  font-size: 2.3rem;
-  margin-left: 1rem;
-  vertical-align: middle;
+@media screen and (max-width: 40rem) {
+  .qstnCont {
+    font-size: 4rem;
+  }
+
+  .input {
+    width: 6rem;
+    font-size: 4rem;
+    font-weight: bold;
+  }
+
+  .equals {
+    display: none;
+  }
+
+  .inputCont {
+    display: flex;
+    justify-content: center;
+  }
 }

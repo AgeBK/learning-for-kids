@@ -1,12 +1,14 @@
-import React from "react";
+import React, { memo } from "react";
+import { Button } from "../../containers/Button";
 import { Section } from "../../containers/Section";
-// import styles from "./User.module.css";
+import { RandomColour } from "../../containers/RandomColour";
+import styles from "./User.module.css";
 
-const User = ({ props }) => {
-  const { setUserName, userName, setStep1, step1, RandomColour } = props;
+const User = ({ setUserName, userName, setStep1, step1 }) => {
+  console.log("User");
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && userName.length > 0) {
+  const handleStep1 = (e) => {
+    if ((e.key === "Enter" || e.type === "click") && userName.length > 0) {
       setStep1(true);
     }
   };
@@ -16,7 +18,7 @@ const User = ({ props }) => {
     setUserName(value[0].toUpperCase() + value.slice(1));
   };
 
-  const Header = (
+  const Header = () => (
     <Section>
       <h2 onClick={() => setStep1(false)}>
         <RandomColour>{userName}</RandomColour>
@@ -24,22 +26,23 @@ const User = ({ props }) => {
     </Section>
   );
 
-  const User = (
+  const User = () => (
     <Section>
       <input
         onChange={handleChange}
-        onKeyDown={handleKeyDown}
+        onKeyDown={handleStep1}
         type="text"
         placeholder="Enter name"
         value={userName}
         autoFocus
         maxLength="10"
+        className={styles.input}
       />
-      <button onClick={() => userName.length && setStep1(true)}>Enter</button>
+      <Button onClick={handleStep1}>Go!!</Button>
     </Section>
   );
 
-  return step1 ? Header : User;
+  return step1 ? <Header /> : <User />;
 };
 
-export default User;
+export default memo(User);

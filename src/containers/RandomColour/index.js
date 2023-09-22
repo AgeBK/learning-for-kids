@@ -3,10 +3,10 @@ import styles from "./RandomColour.module.css";
 
 export const RandomColour = ({ children }) => {
   const getColour = () => {
-    const hexDigits = "0123456789abcdef";
+    const hexChars = "0123456789abcdef";
     let colour = "#";
     for (var i = 0; i < 6; i++) {
-      colour += hexDigits[Math.floor(Math.random() * 16)];
+      colour += hexChars[Math.floor(Math.random() * 16)];
     }
     return colour;
   };

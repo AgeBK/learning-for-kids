@@ -1,12 +1,12 @@
-import React, { useRef } from "react";
+import React, { useRef, memo } from "react";
+import { Button } from "../../containers/Button";
 import { Section } from "../../containers/Section";
 import { RandomColour } from "../../containers/RandomColour";
 import styles from "./Question.module.css";
 
-const Question = ({ props }) => {
+const Question = ({ step1, step2, getSign, submit }) => {
   console.log("Question");
 
-  const { step1, step2, getSign, submit } = props;
   const answerRef = useRef("");
   const maxNum = 20;
   const randomNumber = () => Math.floor(Math.random() * maxNum);
@@ -31,20 +31,25 @@ const Question = ({ props }) => {
             <RandomColour>{num1 > num2 ? num1 : num2}</RandomColour>
             <RandomColour>{getSign}</RandomColour>
             <RandomColour>{num1 > num2 ? num2 : num1}</RandomColour>
-            <RandomColour>=</RandomColour>
-            <input
-              className={styles.input}
-              type="text"
-              maxLength="2"
-              ref={answerRef}
-              autoFocus
-            />
-            <button
-              className={styles.btn}
-              onClick={(e) => handleSubmit(e, num1, num2)}
-            >
+            <span className={styles.equals}>
+              <RandomColour>=</RandomColour>
+            </span>
+            <span className={styles.inputCont}>
+              <input
+                className={styles.input}
+                type="text"
+                maxLength="2"
+                pattern="\d{1,2}"
+                title="Numbers only"
+                required
+                ref={answerRef}
+                autoFocus
+              />
+            </span>
+
+            <Button css="qstnBtn" onClick={(e) => handleSubmit(e, num1, num2)}>
               Answer
-            </button>
+            </Button>
           </div>
         </form>
       </Section>
@@ -54,4 +59,4 @@ const Question = ({ props }) => {
   return null;
 };
 
-export default Question;
+export default memo(Question);

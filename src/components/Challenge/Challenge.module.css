@@ -1,4 +1,11 @@
 .selected {
-    background-color: #008000;
-    color: #fff;
+  background-color: #008000;
+  color: #fff;
+}
+
+@media screen and (max-width: 30rem) {
+  .btn {
+    display: block;
+    margin-bottom: 0.5rem;
   }
+}

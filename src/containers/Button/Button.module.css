@@ -1,0 +1,52 @@
+button {
+  color: #008000;
+  background-color: #fff;
+  padding: 5px 10px;
+  font-size: 2rem;
+  margin: 0;
+  border-radius: 15px;
+  margin-left: 20px;
+  cursor: pointer;
+  margin: 0 1rem;
+}
+
+.selected,
+button:hover {
+  background-color: #008000;
+  color: #fff;
+}
+
+.recordDateBtn {
+  background-color: #fff;
+  color: #008000;
+  padding: 0.3rem;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.recordDateBtnOff {
+  background-color: #008000;
+  color: #fff;
+  padding: 0.3rem;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.qstnBtn {
+  font-size: 2.3rem;
+  margin-left: 1rem;
+  vertical-align: middle;
+}
+
+.reset {
+  color: #f00;
+}
+
+.reset:hover {
+  color: #fff;
+  background-color: #f00;
+}

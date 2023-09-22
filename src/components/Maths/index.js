@@ -1,17 +1,14 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import User from "../User";
 import Timer from "../Timer";
 import Question from "../Question";
 import Results from "../Results";
 import Records from "../Records";
 import Challenge from "../Challenge";
-import { RandomColour } from "../../containers/RandomColour";
-
 import wrong from "../../audio/wrong.mp3";
 import cheer from "../../audio/cheer.mp3";
 import correct from "../../audio/correct.mp3";
 import fail from "../../audio/wah-wah-sad.mp3";
-import styles from "./Maths.module.css";
 
 function Maths() {
   console.log("Maths");
@@ -25,28 +22,31 @@ function Maths() {
   const [position, setPosition] = useState(null);
   const getSign = operation === "Addition" ? "+" : "-";
 
-  const submit = (num1, num2, val) => {
-    const userAnswer = Number(val);
-    let answer = 0;
+  const submit = useCallback(
+    (num1, num2, val) => {
+      const userAnswer = Number(val);
+      let answer = 0;
 
-    switch (operation) {
-      case "Addition":
-        answer = num1 + num2;
-        break;
-      case "Subtraction":
-        answer = num1 > num2 ? num1 - num2 : num2 - num1;
-        break;
-      default:
-        break;
-    }
+      switch (operation) {
+        case "Addition":
+          answer = num1 + num2;
+          break;
+        case "Subtraction":
+          answer = num1 > num2 ? num1 - num2 : num2 - num1;
+          break;
+        default:
+          break;
+      }
 
-    const appropriateSound = new Audio(answer === userAnswer ? correct : wrong);
-    appropriateSound.play();
+      const appropriateSound = new Audio(
+        answer === userAnswer ? correct : wrong
+      );
+      appropriateSound.play();
 
-    // console.log([...results, { num1, num2, answer, userAnswer }]);
-    // console.log(num1 + num2 === userAnswer ? "Right" : "Wrong");
-    setResults([...results, { num1, num2, answer, userAnswer }]);
-  };
+      setResults([...results, { num1, num2, answer, userAnswer }]);
+    },
+    [setResults, operation, results]
+  );
 
   const sortRecords = (arr) => {
     return arr
@@ -56,15 +56,12 @@ function Maths() {
 
   if (step3) {
     // finalise challenge/update records/don't bother if no results
-    console.log(results.length);
-
     let pos = null;
+
     if (results.length) {
-      console.log("Step 3 and Results");
       const records =
         JSON.parse(localStorage.getItem("learning-for-kids")) || [];
       const currentDate = Date().split(" ").slice(0, 5).toString(); // 'Thu', 'Sep', '14', '2023','09:39:09'
-      console.log(currentDate);
 
       const currentResults = {
         date: currentDate,
@@ -78,18 +75,12 @@ function Maths() {
           .length,
       };
 
-      console.log(currentResults);
-
       const arr = sortRecords([...records, currentResults]);
-      console.log(arr);
-
       pos = arr.findIndex((val) => val.date === currentDate) + 1;
-      console.log("Postion: " + pos);
-
-      // const onCompleteMusic = new Audio(pos < 10 ? cheer : fail);
-      // onCompleteMusic.play();
-
       localStorage.setItem("learning-for-kids", JSON.stringify(arr));
+
+      const onCompleteMusic = new Audio(pos <= 10 ? cheer : fail);
+      onCompleteMusic.play();
     }
 
     // if user clicked reset button, need to reset position and step3
@@ -105,22 +96,38 @@ function Maths() {
     mathRecords = mathRecords.filter((val) => val.name !== "Age");
     mathRecords = sortRecords(mathRecords);
     localStorage.setItem("learning-for-kids", JSON.stringify(mathRecords));
-    setPosition(null); // trigger rerender to see update
+    setPosition(null);
   };
 
-  // const setStep2 = useCallback(() => setStep2, []); TODO:// LOOK into this
-  const cachedOperation = useCallback(() => setOperation, []);
+  const cachedResults = useMemo(() => results, [results]);
 
   return (
-    <div className={styles.container}>
-      <User props={{ setUserName, userName, setStep1, step1, RandomColour }} />
-      <Challenge props={{ step1, step2, operation, cachedOperation }} />
-      <Question props={{ step1, step2, getSign, submit }} />
-      <Timer props={{ step1, step2, step3, setStep2, setStep3, setResults }} />
-      <Results props={{ results, getSign }} />
-      {/* <button onClick={erase}></button> */}
+    <>
+      <User
+        setUserName={setUserName}
+        userName={userName}
+        setStep1={setStep1}
+        step1={step1}
+      />
+      <Challenge
+        step1={step1}
+        step2={step2}
+        operation={operation}
+        setOperation={setOperation}
+      />
+      <Question step1={step1} step2={step2} getSign={getSign} submit={submit} />
+      <Timer
+        step1={step1}
+        step2={step2}
+        step3={step3}
+        setStep2={setStep2}
+        setStep3={setStep3}
+        setResults={setResults}
+      />
+      <Results getSign={getSign} cachedResults={cachedResults} />
+      {/* <button onClick={erase}>Erase</button> */}
       <Records position={position} />
-    </div>
+    </>
   );
 }
 

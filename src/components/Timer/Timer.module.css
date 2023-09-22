@@ -3,15 +3,6 @@
   font-weight: bold;
 }
 
-.reset {
-  color: #f00;
-}
-
-.reset:hover {
-  color: #fff;
-  background-color: #f00;
-}
-
 @media screen and (max-width: 50rem) {
   .timeCont {
     font-size: 4rem;

@@ -1,29 +1,26 @@
-import React from "react";
+import React, { memo } from "react";
+import { Button } from "../../containers/Button";
 import { Section } from "../../containers/Section";
-// import { RandomColour } from "../../containers/RandomColour";
 import styles from "./Challenge.module.css";
 
-const Challenge = ({ props }) => {
+const Challenge = ({ step1, step2, operation, setOperation }) => {
   console.log("Challenge");
-
-  const { step1, step2, operation, setOperation } = props;
   const operations = ["Addition", "Subtraction"];
 
   if (step1 && !step2) {
     return (
       <Section>
         <h3>Choose Challenge</h3>
-        <div className={styles.btnCont}>
-          {operations.map((val) => (
-            <button
-              className={val === operation ? styles.selected : null}
+        {operations.map((val) => (
+          <span className={styles.btn} key={val}>
+            <Button
+              css={val === operation ? "selected" : null}
               onClick={() => setOperation(val)}
-              key={val}
             >
               {val}
-            </button>
-          ))}
-        </div>
+            </Button>
+          </span>
+        ))}
       </Section>
     );
   }
@@ -31,4 +28,4 @@ const Challenge = ({ props }) => {
   return null;
 };
 
-export default Challenge;
+export default memo(Challenge);

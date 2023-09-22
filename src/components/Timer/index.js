@@ -1,15 +1,23 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, memo } from "react";
+import { Button } from "../../containers/Button";
 import { Section } from "../../containers/Section";
 import { RandomColour } from "../../containers/RandomColour";
 import startBeeps from "../../audio/countdownStart.mp3";
 import fiveLeft from "../../audio/5toGo.mp3";
 import styles from "./Timer.module.css";
 
-function Timer({ props }) {
+function Timer({ step1, step2, step3, setStep2, setStep3, setResults }) {
   console.log("Timer");
 
-  const { step1, step2, setStep2, setStep3, setResults } = props;
-  const startTime = 11;
+  // Workflow
+  // =================
+  // press start button
+  // Pre start phase: Ready set go displayed (preStart = true, start = false, step2 = false)
+  // Start phase: Count down timer displayed (preStart = false, start = true, setStep2(true) (step2 in parent, shows questions)
+  // step2 = true, start timer for questions
+  // timer = 0, display finished, setStep2(false), setStep3(true) (step3 in parent, complete stage of workflow)
+
+  const startTime = 1111;
   const [time, setTime] = useState(startTime);
   const timeRef = useRef();
   const countRef = useRef(startTime);
@@ -21,14 +29,6 @@ function Timer({ props }) {
 
   const [start, setStart] = useState(false);
   const [complete, setComplete] = useState(false);
-
-  // Workflow
-  // =================
-  // press start button
-  // Ready set go displayed
-  // preStart = false, start = true, step2 = false, setStep2(true) (step2 in parent, shows questions)
-  // step2 = true, start timer for questions
-  // timer = 0, display finished, setStep2(false), setStep3(true) (step3 in parent, complete stage of workflow)
 
   const checkTimer = () => {
     --countRef.current;
@@ -56,7 +56,7 @@ function Timer({ props }) {
   }, [start, complete, step2, setStep2, setStep3]);
 
   const reset = () => {
-    // clear results (don't save to records)
+    // clear results (reset btn has been pressed, don't save to records)
     setResults([]);
     resetVariables();
   };
@@ -107,45 +107,40 @@ function Timer({ props }) {
   }
 
   const Time = () => (
-    <div className={styles.subCont}>
-      <div className={styles.timeCont}>
-        {isPreStart ? (
-          <div className={styles.ready}>
-            {complete ? (
-              <RandomColour>Finished!!</RandomColour>
-            ) : (
-              <RandomColour>{ready[preStart]}</RandomColour>
-            )}
-          </div>
-        ) : (
-          <>
-            <span className={styles.time}>
-              <RandomColour>{Math.trunc(time / 60)}</RandomColour>
-            </span>
-            <span>:</span>
-            <span className={styles.time}>
-              <RandomColour>{secs.toString().padStart(2, "0")}</RandomColour>
-            </span>
-          </>
-        )}
+    <Section>
+      <div className={styles.subCont}>
+        <div className={styles.timeCont}>
+          {isPreStart ? (
+            <div className={styles.ready}>
+              {complete ? (
+                <RandomColour>Finished!!</RandomColour>
+              ) : (
+                <RandomColour>{ready[preStart]}</RandomColour>
+              )}
+            </div>
+          ) : (
+            <>
+              <span className={styles.time}>
+                <RandomColour>{Math.trunc(time / 60)}</RandomColour>
+              </span>
+              <span>:</span>
+              <span className={styles.time}>
+                <RandomColour>{secs.toString().padStart(2, "0")}</RandomColour>
+              </span>
+            </>
+          )}
+        </div>
+        <Button
+          css={start ? "reset" : "btn"}
+          onClick={start ? reset : startPreTimer}
+        >
+          {start ? "Reset" : "Start"}
+        </Button>
       </div>
-      {start ? (
-        <button className={`${styles.btn} ${styles.reset}`} onClick={reset}>
-          Reset
-        </button>
-      ) : (
-        <button className={styles.btn} onClick={startPreTimer}>
-          Start
-        </button>
-      )}
-    </div>
+    </Section>
   );
 
-  return step1 ? (
-    <Section>
-      <Time />
-    </Section>
-  ) : null;
+  return step1 ? <Time /> : null;
 }
 
-export default Timer;
+export default memo(Timer);

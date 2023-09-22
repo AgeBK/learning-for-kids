@@ -6,6 +6,12 @@ I was watching my son doing some online learning homework and got the idea to bu
 
 I want my son to be able to choose between either Maths or spelling, then have a count down timer and either random Maths questions or random images are generated/displayed which he can answer. I'm thinking of including a record table or a 'Top 10 scores style table' to keep track of progress
 
+23/09/2023
+
+- Implemented memo, useMemo and useCallback to prevent unnecessary rerenders
+- Created Button component
+- Styling/refactoring/responsive changes
+
 22/09/2023
 
 - Updated Timer

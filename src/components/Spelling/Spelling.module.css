@@ -1,0 +1,44 @@
+.list {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.listItem {
+  display: inline-block;
+}
+
+.listItem img {
+  height: 200px;
+  width: 200px;
+}
+
+.answerInput {
+  font-size: 2.5rem;
+  width: 30px;
+  margin-right: 0.1rem;
+  font-family: inherit;
+}
+
+.btn {
+  display: block;
+}
+
+.answerInitial {
+  margin-right: 0.1rem;
+  font-size: 3rem;
+}
+
+@media screen and (max-width: 75rem) {
+  .listItem:last-child {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 30rem) {
+  .listItem img {
+    height: 150px;
+    width: 150px;
+  }
+}

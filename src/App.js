@@ -1,10 +1,7 @@
 import React from "react";
-import styles from "./App.module.css";
 import Maths from "./components/Maths";
-import Spelling from "./components/Spelling";
 import { Section } from "./containers/Section";
-import Timer from "./components/Timer";
-import Records from "./components/Records";
+import styles from "./App.module.css";
 
 function App() {
   return (
@@ -15,7 +12,7 @@ function App() {
         </Section>
         <main>
           <Maths />
-          <Spelling />
+          {/* <Spelling /> */}
         </main>
       </div>
     </div>

@@ -1,4 +1,6 @@
 import React, { useState, useCallback, useMemo } from "react";
+import Spelling from "../Spelling";
+
 import User from "../User";
 import Timer from "../Timer";
 import Question from "../Question";
@@ -18,7 +20,8 @@ function Maths() {
   const [step3, setStep3] = useState(false); // step 3: Completed. After timer has reached zero, process results, display in Records
   const [results, setResults] = useState([]); // store questions and answers for current challenge
   const [userName, setUserName] = useState("");
-  const [operation, setOperation] = useState("Addition");
+  const [challenge, setChallenge] = useState("Maths"); // default challenge will be maths
+  const [operation, setOperation] = useState("Addition"); // default operation will be spelling
   const [position, setPosition] = useState(null);
   const getSign = operation === "Addition" ? "+" : "-";
 
@@ -42,7 +45,6 @@ function Maths() {
         answer === userAnswer ? correct : wrong
       );
       appropriateSound.play();
-
       setResults([...results, { num1, num2, answer, userAnswer }]);
     },
     [setResults, operation, results]
@@ -101,6 +103,9 @@ function Maths() {
 
   const cachedResults = useMemo(() => results, [results]);
 
+  const RenderSpelling = () =>
+    step1 && challenge === "Spelling" && <Spelling />;
+
   return (
     <>
       <User
@@ -112,9 +117,14 @@ function Maths() {
       <Challenge
         step1={step1}
         step2={step2}
+        challenge={challenge}
+        setChallenge={setChallenge}
         operation={operation}
         setOperation={setOperation}
       />
+      {/* <Spelling step1={step1} step2={step2} challenge={challenge} /> */}
+      <RenderSpelling />
+
       <Question step1={step1} step2={step2} getSign={getSign} submit={submit} />
       <Timer
         step1={step1}

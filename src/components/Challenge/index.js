@@ -19,7 +19,7 @@ const Challenge = ({
     return (
       <>
         <Section>
-          <h3>Choose Challenge</h3>
+          <h3 className={styles.hdr}>Choose Challenge:</h3>
           {challenges.map((val) => (
             <span className={styles.btn} key={val}>
               <Button
@@ -30,21 +30,22 @@ const Challenge = ({
               </Button>
             </span>
           ))}
+          {challenge === "Maths" && (
+            <>
+              <div className={styles.divider}></div>
+              {operations.map((val) => (
+                <span className={styles.btn} key={val}>
+                  <Button
+                    css={val === operation ? "selected" : null}
+                    onClick={() => setOperation(val)}
+                  >
+                    {val}
+                  </Button>
+                </span>
+              ))}
+            </>
+          )}
         </Section>
-        {challenge === "Maths" && (
-          <Section>
-            {operations.map((val) => (
-              <span className={styles.btn} key={val}>
-                <Button
-                  css={val === operation ? "selected" : null}
-                  onClick={() => setOperation(val)}
-                >
-                  {val}
-                </Button>
-              </span>
-            ))}
-          </Section>
-        )}
       </>
     );
   }

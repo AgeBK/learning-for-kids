@@ -17,7 +17,7 @@ function Timer({ step1, step2, step3, setStep2, setStep3, setResults }) {
   // step2 = true, start timer for questions
   // timer = 0, display finished, setStep2(false), setStep3(true) (step3 in parent, complete stage of workflow)
 
-  const startTime = 1111;
+  const startTime = 10;
   const [time, setTime] = useState(startTime);
   const timeRef = useRef();
   const countRef = useRef(startTime);

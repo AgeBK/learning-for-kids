@@ -2,11 +2,12 @@ import React, { memo } from "react";
 import { Section } from "../../containers/Section";
 import styles from "./Results.module.css";
 
-function Results({ getSign, cachedResults, spellingResults }) {
+function Results({ getSign, cachedResults, challenge }) {
   console.log("Results");
-  console.log(cachedResults || spellingResults);
-  const answers = cachedResults || spellingResults;
-  // const { getSign } = props;
+  console.log(cachedResults);
+
+  const answers = cachedResults;
+  const isMaths = challenge === "Maths";
   const total = answers.length;
   const correct = answers.filter(
     ({ answer, userAnswer }) => answer === userAnswer
@@ -32,7 +33,7 @@ function Results({ getSign, cachedResults, spellingResults }) {
               // <div className={styles.results} key={ind}>
               <div className={styles.results}>
                 <span className={styles.num}>Q{ind + 1}: </span>
-                {cachedResults && (
+                {isMaths && (
                   <>
                     <span className={styles.num}>{num1}</span>
                     <span className={styles.num}>{getSign}</span>
@@ -46,7 +47,7 @@ function Results({ getSign, cachedResults, spellingResults }) {
                     userAnswer === answer ? styles.correct : styles.wrong
                   }
                 >
-                  {userAnswer}{" "}
+                  {userAnswer}
                   {userAnswer !== answer && (
                     <span className={styles.correct}>({answer})</span>
                   )}

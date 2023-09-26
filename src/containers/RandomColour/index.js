@@ -16,7 +16,7 @@ export const RandomColour = ({ children }) => {
       {[...children.toString()].map((val, ind) => (
         <span
           style={{ color: getColour() }}
-          className={styles.shadow}
+          className={styles.cont}
           key={ind}
         >
           {val}

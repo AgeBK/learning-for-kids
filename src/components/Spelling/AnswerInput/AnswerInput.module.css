@@ -1,0 +1,15 @@
+.answerInput {
+  font-size: 2.5rem;
+  width: 30px;
+  margin-right: 0.1rem;
+  font-family: inherit;
+}
+
+.btn {
+  display: block;
+}
+
+.answerInitial {
+  margin-right: 0.1rem;
+  font-size: 3rem;
+}

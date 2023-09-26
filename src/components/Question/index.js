@@ -39,14 +39,13 @@ const Question = ({ step1, step2, getSign, submit }) => {
                 className={styles.input}
                 type="text"
                 maxLength="2"
-                pattern="\d{1,2}"
+                pattern="\d{1,2}" // TODO:
                 title="Numbers only"
                 required
                 ref={answerRef}
                 autoFocus
               />
             </span>
-
             <Button css="qstnBtn" onClick={(e) => handleSubmit(e, num1, num2)}>
               Answer
             </Button>

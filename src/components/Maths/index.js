@@ -21,7 +21,7 @@ function Maths() {
   const [results, setResults] = useState([]); // store questions and answers for current challenge
   const [userName, setUserName] = useState("");
   const [challenge, setChallenge] = useState("Maths"); // default challenge will be maths
-  const [operation, setOperation] = useState("Addition"); // default operation will be spelling
+  const [operation, setOperation] = useState("Addition"); // default operation will be Addition
   const [position, setPosition] = useState(null);
   const getSign = operation === "Addition" ? "+" : "-";
 
@@ -49,6 +49,20 @@ function Maths() {
     },
     [setResults, operation, results]
   );
+
+  const submitSpelling = (e, userAnswer, answer) => {
+    e.preventDefault();
+    // indexRef.current = 1;
+    const appropriateSound = new Audio(
+      userAnswer === answer.join("") ? correct : wrong
+    );
+    appropriateSound.play();
+    setResults([
+      ...results,
+      { answer: userAnswer, userAnswer: answer.join("") },
+    ]);
+    console.log(results);
+  };
 
   const sortRecords = (arr) => {
     return arr
@@ -104,7 +118,14 @@ function Maths() {
   const cachedResults = useMemo(() => results, [results]);
 
   const RenderSpelling = () =>
-    step1 && challenge === "Spelling" && <Spelling />;
+    step1 &&
+    step2 &&
+    challenge === "Spelling" && <Spelling submit={submitSpelling} />;
+
+  const RenderMaths = () =>
+    step1 && step2 && challenge === "Maths" ? (
+      <Question step1={step1} step2={step2} getSign={getSign} submit={submit} />
+    ) : null;
 
   return (
     <>
@@ -122,10 +143,9 @@ function Maths() {
         operation={operation}
         setOperation={setOperation}
       />
-      {/* <Spelling step1={step1} step2={step2} challenge={challenge} /> */}
       <RenderSpelling />
-
-      <Question step1={step1} step2={step2} getSign={getSign} submit={submit} />
+      {/* <Question step1={step1} step2={step2} getSign={getSign} submit={submit} /> */}
+      <RenderMaths />
       <Timer
         step1={step1}
         step2={step2}
@@ -134,7 +154,11 @@ function Maths() {
         setStep3={setStep3}
         setResults={setResults}
       />
-      <Results getSign={getSign} cachedResults={cachedResults} />
+      <Results
+        getSign={getSign}
+        cachedResults={cachedResults}
+        challenge={challenge}
+      />
       {/* <button onClick={erase}>Erase</button> */}
       <Records position={position} />
     </>

@@ -6,7 +6,15 @@ import startBeeps from "../../audio/countdownStart.mp3";
 import fiveLeft from "../../audio/5toGo.mp3";
 import styles from "./Timer.module.css";
 
-function Timer({ step1, step2, step3, setStep2, setStep3, setResults }) {
+function Timer({
+  step1,
+  step2,
+  step3,
+  setStep2,
+  setStep3,
+  setResults,
+  isError,
+}) {
   console.log("Timer");
 
   // Workflow
@@ -17,16 +25,15 @@ function Timer({ step1, step2, step3, setStep2, setStep3, setResults }) {
   // step2 = true, start timer for questions
   // timer = 0, display finished, setStep2(false), setStep3(true) (step3 in parent, complete stage of workflow)
 
-  const startTime = 10;
+  const startTime = 30;
   const [time, setTime] = useState(startTime);
   const timeRef = useRef();
   const countRef = useRef(startTime);
+  const audioRef = useRef(null);
   const secs = time % 60;
-
   const [preStart, setpreStart] = useState(0);
   const [isPreStart, setIsPreStart] = useState(false);
   const ready = ["Ready", "Set", "Go!!!"];
-
   const [start, setStart] = useState(false);
   const [complete, setComplete] = useState(false);
 
@@ -36,8 +43,9 @@ function Timer({ step1, step2, step3, setStep2, setStep3, setResults }) {
     console.log(count);
 
     if (count === 5) {
-      const fiveSecsToGo = new Audio(fiveLeft);
-      fiveSecsToGo.play();
+      audioRef.current = new Audio(fiveLeft);
+      console.log(audioRef.current);
+      audioRef.current.play();
     }
 
     count === 0 && resetVariables();
@@ -55,6 +63,10 @@ function Timer({ step1, step2, step3, setStep2, setStep3, setResults }) {
     }
   }, [start, complete, step2, setStep2, setStep3]);
 
+  useEffect(() => {
+    isError && resetVariables();
+  }, [isError]);
+
   const reset = () => {
     // clear results (reset btn has been pressed, don't save to records)
     setResults([]);
@@ -65,7 +77,10 @@ function Timer({ step1, step2, step3, setStep2, setStep3, setResults }) {
     // reset challenge variables ready to start again
     clearInterval(timeRef.current);
     timeRef.current = null;
-
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
     countRef.current = startTime;
     setComplete(true);
     setIsPreStart(true);
@@ -84,8 +99,7 @@ function Timer({ step1, step2, step3, setStep2, setStep3, setResults }) {
     // pre-timer, activates Ready Set Go countdown
     setIsPreStart(true);
     setComplete(false);
-    setResults([]); // Reset previous results here
-
+    setResults([]);
     const appropriateSound = new Audio(startBeeps);
     appropriateSound.play();
 
@@ -105,8 +119,9 @@ function Timer({ step1, step2, step3, setStep2, setStep3, setResults }) {
     setStart(true);
     startTimer();
   }
+  // stop/reset timer if error occurs
 
-  const Time = () => (
+  return (
     <Section>
       <div className={styles.subCont}>
         <div className={styles.timeCont}>
@@ -139,8 +154,6 @@ function Timer({ step1, step2, step3, setStep2, setStep3, setResults }) {
       </div>
     </Section>
   );
-
-  return step1 ? <Time /> : null;
 }
 
 export default memo(Timer);

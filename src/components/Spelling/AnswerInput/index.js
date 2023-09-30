@@ -1,23 +1,18 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect } from "react";
 import { Button } from "../../../containers/Button";
-import correct from "../../../audio/correct.mp3";
-import wrong from "../../../audio/wrong.mp3";
 import styles from "./AnswerInput.module.css";
 
 const AnswerInput = ({
   answer,
   animalRefVal,
-  results,
-  setResults,
   handleAnswers,
   answerRef,
   indexRef,
   submit,
 }) => {
+  console.log("AnswerInput");
   const reAlph = new RegExp(/^[a-z]+$/);
   console.log(animalRefVal);
-  // console.log(answer);
-  // console.log(animalRefVal.split(""));
 
   useEffect(() => {
     // update focus each time a letter is entered
@@ -25,20 +20,6 @@ const AnswerInput = ({
   }, [answerRef, answer]);
 
   const onClick = (index) => (indexRef.current = index);
-
-  // const onSubmit = (e) => {
-  //   e.preventDefault();
-  //   indexRef.current = 1;
-  //   const appropriateSound = new Audio(
-  //     animalRefVal === answer.join("") ? correct : wrong
-  //   );
-  //   appropriateSound.play();
-  //   setResults([
-  //     ...results,
-  //     { answer: animalRefVal, userAnswer: answer.join("") },
-  //   ]);
-  //   console.log(results);
-  // };
 
   const onChange = (e, index) => {
     const { value } = e.target;
@@ -51,11 +32,16 @@ const AnswerInput = ({
   };
 
   const onKeyUp = (e, index) => {
+    // emulate backspace as it would work for an input field
     if (e.keyCode === 8) {
-      // emulate backspace as it would work for an input field
       indexRef.current = index - 1;
       handleAnswers("", indexRef.current);
     }
+  };
+
+  const handleSubmit = (e) => {
+    indexRef.current = 1;
+    submit(e, animalRefVal, answer.join(""));
   };
 
   if (animalRefVal.length > 0) {
@@ -83,20 +69,16 @@ const AnswerInput = ({
     });
 
     return (
-      <form
-        onSubmit={(e) => submit(e, animalRefVal, answer)}
-        className={styles.form}
-      >
+      <form onSubmit={(e) => handleSubmit(e)} className={styles.form}>
         {result}
-        <Button
-          onClick={(e) => submit(e, animalRefVal, answer)}
-          className={styles.btn}
-        >
+        <Button onClick={(e) => handleSubmit(e)} className={styles.btn}>
           Answer
         </Button>
       </form>
     );
   }
+
   return null;
 };
+
 export default AnswerInput;

@@ -1,0 +1,12 @@
+.hdr span {
+  color: #f00;
+}
+
+.link {
+  border: 2px solid #000;
+  display: inline-block;
+}
+
+.sorry {
+  margin-bottom: 1rem;
+}

@@ -3,7 +3,7 @@ import { Button } from "../../containers/Button";
 import { Section } from "../../containers/Section";
 import styles from "./Records.module.css";
 
-function Records({ position }) {
+function Records({ position, recordData }) {
   console.log("Records");
 
   const [mathRecords, setMathRecords] = useState([]);
@@ -17,10 +17,10 @@ function Records({ position }) {
 
   useEffect(() => {
     console.log("Records UE data");
-    const records = JSON.parse(localStorage.getItem("learning-for-kids")) || [];
-    console.log(records);
-    setMathRecords(records);
-  }, [position]);
+    const storedRecords = JSON.parse(localStorage.getItem(recordData)) || [];
+    console.log(storedRecords);
+    setMathRecords(storedRecords);
+  }, [position, recordData]);
 
   if (orderByDate) {
     records = records.sort((a, b) =>
@@ -76,27 +76,31 @@ function Records({ position }) {
             </Button>
           </span>
         </div>
-
-        {data?.map((val, ind) => (
-          <div
-            key={ind}
-            className={`${styles.records} 
+        {data?.map(
+          (
+            { position: pos, name, challenge, answered, correct, wrong, date },
+            ind
+          ) => (
+            <div
+              key={ind}
+              className={`${styles.records} 
             ${ind === 0 && styles.hdrRow}            
-            ${val.position === 1 && styles.champ} 
-            ${val.position === position && styles.current} 
+            ${pos === 1 && styles.champ} 
+            ${pos === position && styles.current} 
             ${ind === 10 && styles.cutOff} `}
-          >
-            <span className={styles.position}>{val.position}</span>
-            <span className={styles.name}>{val.name}</span>
-            <span className={styles.challenge}>{val.challenge}</span>
-            <span className={styles.answered}>{val.answered}</span>
-            <span className={styles.correct}>{val.correct}</span>
-            <span className={styles.wrong}>{val.wrong}</span>
-            <span className={styles.date}>
-              <FormatDate date={val.date} />
-            </span>
-          </div>
-        ))}
+            >
+              <span className={styles.position}>{pos}</span>
+              <span className={styles.name}>{name}</span>
+              <span className={styles.challenge}>{challenge}</span>
+              <span className={styles.answered}>{answered}</span>
+              <span className={styles.correct}>{correct}</span>
+              <span className={styles.wrong}>{wrong}</span>
+              <span className={styles.date}>
+                <FormatDate date={date} />
+              </span>
+            </div>
+          )
+        )}
       </div>
     </Section>
   );

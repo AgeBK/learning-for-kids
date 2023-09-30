@@ -15,7 +15,9 @@ const User = ({ setUserName, userName, setStep1, step1 }) => {
 
   const handleChange = (e) => {
     const { value } = e.target;
-    setUserName(value[0].toUpperCase() + value.slice(1));
+    value
+      ? setUserName(value[0].toUpperCase() + value.slice(1))
+      : setUserName("");
   };
 
   const Header = () => (

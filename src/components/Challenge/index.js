@@ -10,47 +10,48 @@ const Challenge = ({
   setChallenge,
   operation,
   setOperation,
+  isMaths,
 }) => {
   console.log("Challenge");
   const challenges = ["Maths", "Spelling"];
   const operations = ["Addition", "Subtraction"];
 
-  if (step1 && !step2) {
-    return (
-      <>
-        <Section>
-          <h3 className={styles.hdr}>Choose Challenge:</h3>
-          {challenges.map((val) => (
-            <span className={styles.btn} key={val}>
-              <Button
-                css={val === challenge ? "selected" : null}
-                onClick={() => setChallenge(val)}
-              >
-                {val}
-              </Button>
-            </span>
-          ))}
-          {challenge === "Maths" && (
-            <>
-              <div className={styles.divider}></div>
-              {operations.map((val) => (
-                <span className={styles.btn} key={val}>
-                  <Button
-                    css={val === operation ? "selected" : null}
-                    onClick={() => setOperation(val)}
-                  >
-                    {val}
-                  </Button>
-                </span>
-              ))}
-            </>
-          )}
-        </Section>
-      </>
-    );
-  }
+  // if (step1 && !step2) {
+  return (
+    <>
+      <Section>
+        <h3 className={styles.hdr}>Choose Challenge:</h3>
+        {challenges.map((val) => (
+          <span className={styles.btn} key={val}>
+            <Button
+              css={val === challenge ? "selected" : null}
+              onClick={() => setChallenge(val)}
+            >
+              {val}
+            </Button>
+          </span>
+        ))}
+        {isMaths && (
+          <>
+            <div className={styles.divider}></div>
+            {operations.map((val) => (
+              <span className={styles.btn} key={val}>
+                <Button
+                  css={val === operation ? "selected" : null}
+                  onClick={() => setOperation(val)}
+                >
+                  {val}
+                </Button>
+              </span>
+            ))}
+          </>
+        )}
+      </Section>
+    </>
+  );
+  //}
 
-  return null;
+  // return null;
 };
 
 export default memo(Challenge);

@@ -8,16 +8,15 @@ function Error() {
   return (
     <Section>
       <img src={Img} className={styles.img} alt="Error has occured" />
-      <>
-        <h2 className={styles.hdr}>
-          Whoops!!
-          <br /> <span>Something has gone wrong</span>
-        </h2>
-        <div className={styles.sorry}>Sorry for the inconvenience</div>
-        <a href="/" className={`${styles.link} ${btnStyles.button}`}>
-          Try restarting
-        </a>
-      </>
+      <h2 className={styles.hdr}>
+        Whoops!!
+        <br />
+        <span>Something has gone wrong</span>
+      </h2>
+      <div className={styles.sorry}>Sorry for the inconvenience</div>
+      <a href="/" className={`${styles.link} ${btnStyles.button}`}>
+        Try restarting
+      </a>
     </Section>
   );
 }

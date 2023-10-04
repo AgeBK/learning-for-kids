@@ -2,76 +2,72 @@ import React, { useEffect } from "react";
 import { Button } from "../../../containers/Button";
 import styles from "./AnswerInput.module.css";
 
-const AnswerInput = ({
-  answer,
-  animalRefVal,
+function AnswerInput({
+  userAnswer,
+  wordToSpell,
   handleAnswers,
   answerRef,
   indexRef,
   submit,
-}) => {
+}) {
   console.log("AnswerInput");
-  const reAlph = new RegExp(/^[a-z]+$/);
-  console.log(animalRefVal);
 
   useEffect(() => {
     // update focus each time a letter is entered
     answerRef.current && answerRef.current.focus();
-  }, [answerRef, answer]);
+  }, [answerRef, userAnswer]);
 
   const onClick = (index) => (indexRef.current = index);
 
-  const onChange = (e, index) => {
-    const { value } = e.target;
+  const onChange = ({ target: { value } }, index) => {
     // emualte tab press if value present and not last input box
-    // shift tab?
-    if (reAlph.test(value) && animalRefVal.length !== index + 1) {
+    if (wordToSpell.length !== index + 1) {
       indexRef.current = index + 1;
     }
     handleAnswers(value, index);
   };
 
-  const onKeyUp = (e, index) => {
+  const onKeyUp = ({ keyCode }, index) => {
     // emulate backspace as it would work for an input field
-    if (e.keyCode === 8) {
+    if (keyCode === 8 && index > 1) {
       indexRef.current = index - 1;
       handleAnswers("", indexRef.current);
     }
   };
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     indexRef.current = 1;
-    submit(e, animalRefVal, answer.join(""));
+    submit(wordToSpell, userAnswer.join(""));
   };
 
-  if (animalRefVal.length > 0) {
-    const result = animalRefVal.split("").map((val, ind) => {
-      console.log(val);
-      return (
-        <span key={val + ind}>
-          {ind === 0 ? (
-            <span className={styles.answerInitial}>{val}</span>
-          ) : (
-            <input
-              className={styles.answerInput}
-              onChange={(e) => onChange(e, ind)}
-              onKeyUp={(e) => onKeyUp(e, ind)}
-              onClick={() => onClick(ind)}
-              type="text"
-              id={`input-${ind}`}
-              value={answer[ind]}
-              maxLength="1"
-              ref={indexRef.current === ind ? answerRef : null}
-            />
-          )}
-        </span>
-      );
-    });
+  if (wordToSpell.length) {
+    const AnswerFields = () =>
+      wordToSpell
+        .split("")
+        .map((val, ind) => (
+          <span key={val + ind}>
+            {ind === 0 ? (
+              <span className={styles.answerInitial}>{val}</span>
+            ) : (
+              <input
+                className={styles.answerInput}
+                onChange={(e) => onChange(e, ind)}
+                onKeyUp={(e) => onKeyUp(e, ind)}
+                onClick={() => onClick(ind)}
+                type="text"
+                value={userAnswer[ind] || ""}
+                maxLength="1"
+                ref={indexRef.current === ind ? answerRef : null}
+              />
+            )}
+          </span>
+        ));
 
     return (
-      <form onSubmit={(e) => handleSubmit(e)} className={styles.form}>
-        {result}
-        <Button onClick={(e) => handleSubmit(e)} className={styles.btn}>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <AnswerFields />
+        <Button onClick={handleSubmit} className={styles.btn}>
           Answer
         </Button>
       </form>
@@ -79,6 +75,6 @@ const AnswerInput = ({
   }
 
   return null;
-};
+}
 
 export default AnswerInput;

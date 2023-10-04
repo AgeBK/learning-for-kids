@@ -1,22 +1,27 @@
-import React, { memo } from "react";
+import React from "react";
 import { Button } from "../../containers/Button";
 import { Section } from "../../containers/Section";
 import styles from "./Challenge.module.css";
 
 const Challenge = ({
-  step1,
-  step2,
   challenge,
   setChallenge,
   operation,
   setOperation,
   isMaths,
+  setResults,
+  setPosition,
 }) => {
   console.log("Challenge");
   const challenges = ["Maths", "Spelling"];
   const operations = ["Addition", "Subtraction"];
 
-  // if (step1 && !step2) {
+  const handleClick = (val) => {
+    setChallenge(val);
+    setPosition(null);
+    setResults([]);
+  };
+
   return (
     <>
       <Section>
@@ -25,7 +30,7 @@ const Challenge = ({
           <span className={styles.btn} key={val}>
             <Button
               css={val === challenge ? "selected" : null}
-              onClick={() => setChallenge(val)}
+              onClick={() => handleClick(val)}
             >
               {val}
             </Button>
@@ -49,9 +54,6 @@ const Challenge = ({
       </Section>
     </>
   );
-  //}
-
-  // return null;
 };
 
-export default memo(Challenge);
+export default Challenge;

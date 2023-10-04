@@ -10,20 +10,16 @@ const unSplashAccessKey = "WwQoe_p8T_CLABx_Ay32MvDbK-FOc9vG-j43s2WpIdU";
 const unsplash = createApi({ accessKey: unSplashAccessKey });
 
 function Spelling({ submit, results, setIsError }) {
-  console.log("Spelling");
-
   const [dataFetch, setDataFetch] = useState({
     data: [],
     loading: true,
+    wordToSpell: "",
   });
-  const [answer, setAnswer] = useState([]);
-  const answerRef = useRef(); // Will be the active input field the answer is entered into
-  const indexRef = useRef(1); // Will keep track of the current index of the active input field
-  const animalRef = useRef("");
+  const [userAnswer, setUserAnswer] = useState([]); // the users answer updated each letter press / using array (can enter answer in any order)
+  const answerRef = useRef(); // the active input field the answer is entered into
+  const indexRef = useRef(1); // the current index of the input fields
 
   useEffect(() => {
-    console.log("Spelling UE");
-    console.log(new Date());
     const randomNum = Math.floor(Math.random() * animals.length);
     const randomAnimal = animals[randomNum];
     console.log(randomAnimal);
@@ -38,40 +34,34 @@ function Spelling({ submit, results, setIsError }) {
         setDataFetch({
           data: [...results],
           loading: false,
+          wordToSpell: randomAnimal,
         });
-        animalRef.current = randomAnimal;
-        setAnswer(randomAnimal.substring(0, 1));
+        setUserAnswer([randomAnimal.substring(0, 1)]);
       })
       .catch((err) => {
         setIsError(true);
       });
+  }, [results, setIsError]); // run this each time results is updated
 
-    // // test search data below
-    // console.log(searchResults);
-    // setData(searchResults);
-    // animalRef.current = randomAnimal;
-    // setAnswer(randomAnimal.substring(0, 1));
-  }, [results, setIsError]);
-
-  // The answer is entered as an array instead of a string (adds complexity) TODO
   const handleAnswers = (val, index) => {
-    const newAnswer = [...answer];
+    const newAnswer = [...userAnswer];
     newAnswer[index] = val;
-    setAnswer(newAnswer);
+    setUserAnswer(newAnswer);
   };
+
+  const { data, loading, wordToSpell } = dataFetch;
 
   return (
     <>
       <Section>
-        {dataFetch.loading ? (
+        {loading ? (
           <Loading />
         ) : (
           <>
-            <ImageList data={dataFetch.data} />
+            <ImageList data={data} />
             <AnswerInput
-              answer={answer}
-              animalRefVal={animalRef.current}
-              results={results}
+              userAnswer={userAnswer}
+              wordToSpell={wordToSpell}
               handleAnswers={handleAnswers}
               answerRef={answerRef}
               indexRef={indexRef}

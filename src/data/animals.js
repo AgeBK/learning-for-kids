@@ -25,7 +25,6 @@ const animals = [
   "Buffalo",
   "Butterfly",
   "Camel",
-  "Canetoad",
   "Carp",
   "Cassowary",
   "Cat",
@@ -126,8 +125,6 @@ const animals = [
   "Macaw",
   "Mackerel",
   "Magpie",
-  "Marlin",
-  "Medusa",
   "Meerkat",
   "Mockingbird",
   "Mole",
@@ -180,7 +177,6 @@ const animals = [
   "Redpanda",
   "Reindeer",
   "Rhinoceros",
-  "Roadrunner",
   "Rooster",
   "Salamander",
   "Salmon",
@@ -193,7 +189,6 @@ const animals = [
   "Shark",
   "Sheep",
   "Silkworm",
-  "Silverfish",
   "Skink",
   "Skunk",
   "Sloth",
@@ -274,7 +269,6 @@ const animals = [
   "Sushi",
   "Eggs",
   "Noodles",
-  "Friedrice",
 ];
 
 export { animals };

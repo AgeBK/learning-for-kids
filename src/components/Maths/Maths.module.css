@@ -18,6 +18,11 @@
     font-size: 4rem;
   }
 
+  .inputCont {
+    display: flex;
+    justify-content: center;
+  }
+
   .input {
     width: 6rem;
     font-size: 4rem;
@@ -26,10 +31,5 @@
 
   .equals {
     display: none;
-  }
-
-  .inputCont {
-    display: flex;
-    justify-content: center;
   }
 }

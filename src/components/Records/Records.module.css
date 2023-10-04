@@ -1,7 +1,7 @@
 .recordContainer {
   display: flex;
   flex-direction: column;
-  font-size: 18px;
+  font-size: 1.2rem;
   padding-bottom: 1.5rem;
 }
 
@@ -13,7 +13,6 @@
   padding: 8px;
   width: 12%;
   display: inline-block;
-  font-size: 1.2rem;
 }
 
 .placed {

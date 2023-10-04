@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import { Section } from "../../containers/Section";
 import styles from "./Results.module.css";
 
@@ -6,52 +6,48 @@ function Results({ getSign, results, isMaths }) {
   console.log("Results");
   console.log(results);
 
-  // const isMaths = challenge === "Maths";
-  const total = results.length;
-  const correct = results.filter(
-    ({ answer, userAnswer }) => answer === userAnswer
-  ).length;
-  const wrong = total - correct;
-  const percent = Math.round((correct / total) * 100);
-
   if (results.length) {
+    const total = results.length;
+    const correct = results.filter(
+      ({ answer, userAnswer }) => answer === userAnswer
+    ).length;
+    const wrong = total - correct;
+    const percent = Math.round((correct / total) * 100);
+
     return (
       <Section>
-        <h3 className={styles.resultsHdr}>Results</h3>
+        <h3>Results</h3>
         <div className={styles.resultsSubHdrs}>
-          <h4 className={styles.answered}>Answered: {total}</h4>
+          <h4>Answered: {total}</h4>
           <h4 className={styles.correct}>Correct: {correct}</h4>
           <h4 className={styles.wrong}>Wrong: {wrong}</h4>
           <h4 className={styles.percent}>({percent}%)</h4>
         </div>
         <hr />
         <div className={styles.resultCont}>
-          {results?.map(
-            ({ num1, num2, answer, userAnswer, operation }, ind) => (
-              // <div className={styles.results} key={ind}>
-              <div className={styles.results}>
-                <span className={styles.num}>Q{ind + 1}: </span>
-                {isMaths && (
-                  <>
-                    <span className={styles.num}>{num1}</span>
-                    <span className={styles.num}>{getSign}</span>
-                    <span className={styles.num}>{num2}</span>
-                    <span className={styles.num}> = </span>
-                  </>
+          {results.map(({ num1, num2, answer, userAnswer, operation }, ind) => (
+            <div className={styles.results} key={ind}>
+              <span>Q{ind + 1}: </span>
+              {isMaths && (
+                <>
+                  <span>{num1}</span>
+                  <span>{getSign}</span>
+                  <span>{num2}</span>
+                  <span> = </span>
+                </>
+              )}
+              <span
+                className={
+                  userAnswer === answer ? styles.correct : styles.wrong
+                }
+              >
+                {userAnswer}
+                {userAnswer !== answer && (
+                  <span className={styles.correct}>({answer})</span>
                 )}
-                <span
-                  className={
-                    userAnswer === answer ? styles.correct : styles.wrong
-                  }
-                >
-                  {userAnswer}
-                  {userAnswer !== answer && (
-                    <span className={styles.correct}>({answer})</span>
-                  )}
-                </span>
-              </div>
-            )
-          )}
+              </span>
+            </div>
+          ))}
         </div>
       </Section>
     );
@@ -60,4 +56,4 @@ function Results({ getSign, results, isMaths }) {
   return null;
 }
 
-export default memo(Results);
+export default Results;

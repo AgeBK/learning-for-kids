@@ -13,12 +13,8 @@ function Records({ position, recordData }) {
   let totalRecords = records.length;
   let top10Results = [];
 
-  console.log(position);
-
   useEffect(() => {
-    console.log("Records UE data");
     const storedRecords = JSON.parse(localStorage.getItem(recordData)) || [];
-    console.log(storedRecords);
     setMathRecords(storedRecords);
   }, [position, recordData]);
 
@@ -84,10 +80,9 @@ function Records({ position, recordData }) {
             <div
               key={ind}
               className={`${styles.records} 
-            ${ind === 0 && styles.hdrRow}            
-            ${pos === 1 && styles.champ} 
-            ${pos === position && styles.current} 
-            ${ind === 10 && styles.cutOff} `}
+            ${ind === 0 ? styles.hdrRow : ""}            
+            ${pos === 1 ? styles.champ : ""} 
+            ${pos === position ? styles.current : ""} `}
             >
               <span className={styles.position}>{pos}</span>
               <span className={styles.name}>{name}</span>

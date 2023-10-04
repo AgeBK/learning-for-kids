@@ -7,16 +7,12 @@ import fiveLeft from "../../audio/5toGo.mp3";
 import styles from "./Timer.module.css";
 
 function Timer({
-  step1,
   step2,
-  step3,
   setStep2,
   setStep3,
   setResults,
   isError,
 }) {
-  console.log("Timer");
-
   // Workflow
   // =================
   // press start button
@@ -25,7 +21,7 @@ function Timer({
   // step2 = true, start timer for questions
   // timer = 0, display finished, setStep2(false), setStep3(true) (step3 in parent, complete stage of workflow)
 
-  const startTime = 30;
+  const startTime = 10;
   const [time, setTime] = useState(startTime);
   const timeRef = useRef();
   const countRef = useRef(startTime);
@@ -119,7 +115,6 @@ function Timer({
     setStart(true);
     startTimer();
   }
-  // stop/reset timer if error occurs
 
   return (
     <Section>

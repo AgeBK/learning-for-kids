@@ -1,5 +1,5 @@
 import React from "react";
-import Maths from "./components/Maths";
+import Learning from "./components/Learning";
 import { Section } from "./containers/Section";
 import styles from "./App.module.css";
 
@@ -11,8 +11,7 @@ function App() {
           <h1 className={styles.header}>Learning for kids</h1>
         </Section>
         <main>
-          <Maths />
-          {/* <Spelling /> */}
+          <Learning />
         </main>
       </div>
     </div>

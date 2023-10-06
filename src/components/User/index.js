@@ -5,7 +5,7 @@ import { RandomColour } from "../../containers/RandomColour";
 import styles from "./User.module.css";
 
 const User = ({ setUserName, userName, setStep1, step1 }) => {
-  console.log("User");
+  // console.log("User");
 
   const handleStep1 = (e) => {
     if ((e.key === "Enter" || e.type === "click") && userName.length > 0) {
@@ -38,7 +38,9 @@ const User = ({ setUserName, userName, setStep1, step1 }) => {
         value={userName}
         autoFocus
         maxLength="10"
+        id="inputUserName"
         className={styles.input}
+        aria-label="Enter name"
       />
       <Button onClick={handleStep1}>Go!!</Button>
     </Section>

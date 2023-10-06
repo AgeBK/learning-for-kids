@@ -4,7 +4,7 @@ import { Section } from "../../containers/Section";
 import styles from "./Records.module.css";
 
 function Records({ position, recordData }) {
-  console.log("Records");
+  // console.log("Records");
 
   const [mathRecords, setMathRecords] = useState([]);
   const [showAll, setShowAll] = useState(false);

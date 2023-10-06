@@ -13,7 +13,7 @@ import correct from "../../audio/correct.mp3";
 import fail from "../../audio/wah-wah-sad.mp3";
 
 function Learning() {
-  console.log("Learning");
+  // console.log("Learning");
 
   const [step1, setStep1] = useState(false); // step 1: A name must be entered, then timer will display
   const [step2, setStep2] = useState(false); // step 2: Start. After pre-timer (Ready, set, go) runs, the questions will be presented and a timer will count down to zero
@@ -61,7 +61,6 @@ function Learning() {
       const arr = [...records, currentResults]
         .sort((a, b) => (a.correct > b.correct ? -1 : 1))
         .map((val, ind) => ({ ...val, position: ind + 1 }));
-      console.log(arr);
       localStorage.setItem(recordData, JSON.stringify(arr));
       pos = arr.findIndex((val) => val.date === currentDate) + 1;
       playAppropriateSound(pos <= 10 ? cheer : fail);
@@ -71,20 +70,6 @@ function Learning() {
     setPosition(pos);
     setStep3(false);
   }
-
-  // Test function : record modifying
-  const erase = () => {
-    console.log("erase");
-    let mathRecords = JSON.parse(localStorage.getItem(recordData)) || [];
-    // mathRecords = mathRecords
-    // .filter((val) => val.wrong >= 0);
-    //   .map((val) => ({ ...val, name: "Timmy" }));
-    mathRecords = mathRecords
-      .sort((a, b) => (a.correct > b.correct ? -1 : 1))
-      .map((val, ind) => ({ ...val, position: ind + 1 }));
-    localStorage.setItem(recordData, JSON.stringify(mathRecords));
-    setPosition(null);
-  };
 
   return (
     <>
@@ -121,7 +106,7 @@ function Learning() {
           isError={isError}
         />
       )}
-      {results.length > 0 && (
+      {results.length > 0 && !isError && (
         <Results
           getSign={getSign}
           results={results}
@@ -129,9 +114,6 @@ function Learning() {
           isMaths={isMaths}
         />
       )}
-
-      <button onClick={erase}>Erase</button>
-      <button onClick={() => setIsError(true)}>Error</button>
       <Records position={position} recordData={recordData} />
     </>
   );

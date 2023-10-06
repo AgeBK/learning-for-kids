@@ -5,7 +5,7 @@ import { RandomColour } from "../../containers/RandomColour";
 import styles from "./Maths.module.css";
 
 const Maths = ({ step1, step2, getSign, submit }) => {
-  console.log("Maths");
+  // console.log("Maths");
 
   const answerRef = useRef("");
   const maxNum = 20;

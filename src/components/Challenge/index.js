@@ -3,7 +3,7 @@ import { Button } from "../../containers/Button";
 import { Section } from "../../containers/Section";
 import styles from "./Challenge.module.css";
 
-const Challenge = ({
+function Challenge({
   challenge,
   setChallenge,
   operation,
@@ -11,8 +11,8 @@ const Challenge = ({
   isMaths,
   setResults,
   setPosition,
-}) => {
-  console.log("Challenge");
+}) {
+  // console.log("Challenge");
   const challenges = ["Maths", "Spelling"];
   const operations = ["Addition", "Subtraction"];
 
@@ -27,7 +27,7 @@ const Challenge = ({
       <Section>
         <h3 className={styles.hdr}>Choose Challenge:</h3>
         {challenges.map((val) => (
-          <span className={styles.btn} key={val}>
+          <span key={val}>
             <Button
               css={val === challenge ? "selected" : null}
               onClick={() => handleClick(val)}
@@ -40,7 +40,7 @@ const Challenge = ({
           <>
             <div className={styles.divider}></div>
             {operations.map((val) => (
-              <span className={styles.btn} key={val}>
+              <span key={val}>
                 <Button
                   css={val === operation ? "selected" : null}
                   onClick={() => setOperation(val)}
@@ -54,6 +54,6 @@ const Challenge = ({
       </Section>
     </>
   );
-};
+}
 
 export default Challenge;

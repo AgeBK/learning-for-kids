@@ -3,8 +3,7 @@ import { Section } from "../../containers/Section";
 import styles from "./Results.module.css";
 
 function Results({ getSign, results, isMaths }) {
-  console.log("Results");
-  console.log(results);
+  // console.log("Results");
 
   if (results.length) {
     const total = results.length;

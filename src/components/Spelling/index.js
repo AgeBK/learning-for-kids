@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import Loading from "../Loading";
+import { Loading } from "../Loading";
 import ImageList from "./ImageList";
 import AnswerInput from "./AnswerInput";
 import { createApi } from "unsplash-js";
@@ -22,8 +22,6 @@ function Spelling({ submit, results, setIsError }) {
   useEffect(() => {
     const randomNum = Math.floor(Math.random() * animals.length);
     const randomAnimal = animals[randomNum];
-    console.log(randomAnimal);
-
     // API search
     unsplash.search
       .getPhotos({

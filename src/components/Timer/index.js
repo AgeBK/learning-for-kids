@@ -6,13 +6,9 @@ import startBeeps from "../../audio/countdownStart.mp3";
 import fiveLeft from "../../audio/5toGo.mp3";
 import styles from "./Timer.module.css";
 
-function Timer({
-  step2,
-  setStep2,
-  setStep3,
-  setResults,
-  isError,
-}) {
+function Timer({ step2, setStep2, setStep3, setResults, isError }) {
+  // console.log("Timer");
+
   // Workflow
   // =================
   // press start button
@@ -21,7 +17,7 @@ function Timer({
   // step2 = true, start timer for questions
   // timer = 0, display finished, setStep2(false), setStep3(true) (step3 in parent, complete stage of workflow)
 
-  const startTime = 10;
+  const startTime = 60;
   const [time, setTime] = useState(startTime);
   const timeRef = useRef();
   const countRef = useRef(startTime);
@@ -36,11 +32,9 @@ function Timer({
   const checkTimer = () => {
     --countRef.current;
     let count = countRef.current;
-    console.log(count);
 
     if (count === 5) {
       audioRef.current = new Audio(fiveLeft);
-      console.log(audioRef.current);
       audioRef.current.play();
     }
 
@@ -67,16 +61,16 @@ function Timer({
     // clear results (reset btn has been pressed, don't save to records)
     setResults([]);
     resetVariables();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
   };
 
   const resetVariables = () => {
     // reset challenge variables ready to start again
     clearInterval(timeRef.current);
     timeRef.current = null;
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
     countRef.current = startTime;
     setComplete(true);
     setIsPreStart(true);

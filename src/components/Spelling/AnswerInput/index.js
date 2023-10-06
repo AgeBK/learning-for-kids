@@ -10,7 +10,7 @@ function AnswerInput({
   indexRef,
   submit,
 }) {
-  console.log("AnswerInput");
+  // console.log("AnswerInput");
 
   useEffect(() => {
     // update focus each time a letter is entered
@@ -28,7 +28,7 @@ function AnswerInput({
   };
 
   const onKeyUp = ({ keyCode }, index) => {
-    // emulate backspace as it would work for an input field
+    // emulate backspace as it would work for an input field/unless its the first input field
     if (keyCode === 8 && index > 1) {
       indexRef.current = index - 1;
       handleAnswers("", indexRef.current);

@@ -19,7 +19,7 @@ function Timer({ step2, setStep2, setStep3, setResults, isError }) {
 
   const startTime = 60;
   const [time, setTime] = useState(startTime);
-  const timeRef = useRef();
+  const intervalIdRef = useRef(null);
   const countRef = useRef(startTime);
   const audioRef = useRef(null);
   const secs = time % 60;
@@ -69,8 +69,8 @@ function Timer({ step2, setStep2, setStep3, setResults, isError }) {
 
   const resetVariables = () => {
     // reset challenge variables ready to start again
-    clearInterval(timeRef.current);
-    timeRef.current = null;
+    clearInterval(intervalIdRef.current);
+    intervalIdRef.current = null;
     countRef.current = startTime;
     setComplete(true);
     setIsPreStart(true);
@@ -79,7 +79,7 @@ function Timer({ step2, setStep2, setStep3, setResults, isError }) {
   };
 
   const startTimer = () => {
-    timeRef.current = setInterval(() => {
+    intervalIdRef.current = setInterval(() => {
       setTime((prev) => prev - 1);
       checkTimer();
     }, 1000);
@@ -93,7 +93,7 @@ function Timer({ step2, setStep2, setStep3, setResults, isError }) {
     const appropriateSound = new Audio(startBeeps);
     appropriateSound.play();
 
-    timeRef.current = setInterval(() => {
+    intervalIdRef.current = setInterval(() => {
       setpreStart((prev) => prev + 1);
     }, 1000);
   };
@@ -101,8 +101,8 @@ function Timer({ step2, setStep2, setStep3, setResults, isError }) {
   if (preStart === ready.length) {
     // pre-timer finished
     // set variables for challenge (step 2) - start countdown for quesitons
-    clearInterval(timeRef.current);
-    timeRef.current = null;
+    clearInterval(intervalIdRef.current);
+    intervalIdRef.current = null;
 
     setIsPreStart(false);
     setpreStart(0);

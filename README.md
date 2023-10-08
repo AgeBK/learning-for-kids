@@ -28,8 +28,8 @@ So, I stuck to the original idea, the user has a choice of doing maths (addition
 
 09/10/2023
 
-- different backgrounds for maths/spelling
-- refactoring/styling
+- Different backgrounds for maths/spelling
+- Refactoring/styling
 
 05/10/2023
 

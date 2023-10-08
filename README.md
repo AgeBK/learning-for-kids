@@ -26,6 +26,11 @@ So, I stuck to the original idea, the user has a choice of doing maths (addition
   4: The aim for the user is to answer as many questions as possible before the timer runs out
   5: When the time is up, the timer stops, finished is displayed and the users' results are displayed in the records table which is saved in local storage
 
+09/10/2023
+
+- different backgrounds for maths/spelling
+- refactoring/styling
+
 05/10/2023
 
 - Refactoring and testing

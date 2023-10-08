@@ -41,7 +41,7 @@
 }
 
 .allTotal {
-  color: gray;
+  color: #555;
   font-size: 1rem;
 }
 
@@ -49,13 +49,13 @@
   color: #008000;
 }
 
-.records.champ span {
-  background-color: gold;
+.records.current span {
+  background-color: green;
   color: #000;
 }
 
-.records.current span {
-  background-color: green;
+.records.champ span {
+  background-color: gold;
   color: #000;
 }
 

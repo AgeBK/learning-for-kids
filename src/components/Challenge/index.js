@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Button } from "../../containers/Button";
 import { Section } from "../../containers/Section";
 import styles from "./Challenge.module.css";
@@ -11,12 +11,14 @@ function Challenge({
   isMaths,
   setResults,
   setPosition,
+  setSpellingBG,
 }) {
   // console.log("Challenge");
   const challenges = ["Maths", "Spelling"];
   const operations = ["Addition", "Subtraction"];
 
   const handleClick = (val) => {
+    setSpellingBG(val === "Spelling" ? true : false);
     setChallenge(val);
     setPosition(null);
     setResults([]);
@@ -56,4 +58,4 @@ function Challenge({
   );
 }
 
-export default Challenge;
+export default memo(Challenge);

@@ -5,6 +5,10 @@
   min-height: 100vh;
 }
 
+.spelling {
+  background: url("./img/alphabet.jpg");
+}
+
 .contInner {
   margin: 0 auto;
   max-width: 75rem;

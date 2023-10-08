@@ -12,7 +12,7 @@ import cheer from "../../audio/cheer.mp3";
 import correct from "../../audio/correct.mp3";
 import fail from "../../audio/wah-wah-sad.mp3";
 
-function Learning() {
+function Learning({ setSpellingBG }) {
   // console.log("Learning");
 
   const [step1, setStep1] = useState(false); // step 1: A name must be entered, then timer will display
@@ -88,6 +88,7 @@ function Learning() {
           isMaths={isMaths}
           setResults={setResults}
           setPosition={setPosition}
+          setSpellingBG={setSpellingBG}
         />
       )}
       {isError && <Error />}

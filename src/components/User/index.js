@@ -4,7 +4,7 @@ import { Section } from "../../containers/Section";
 import { RandomColour } from "../../containers/RandomColour";
 import styles from "./User.module.css";
 
-const User = ({ setUserName, userName, setStep1, step1 }) => {
+function User({ setUserName, userName, setStep1, step1 }) {
   // console.log("User");
 
   const handleStep1 = (e) => {
@@ -47,6 +47,6 @@ const User = ({ setUserName, userName, setStep1, step1 }) => {
   );
 
   return step1 ? <Header /> : <User />;
-};
+}
 
 export default memo(User);

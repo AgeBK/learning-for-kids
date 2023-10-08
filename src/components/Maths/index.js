@@ -4,7 +4,7 @@ import { Section } from "../../containers/Section";
 import { RandomColour } from "../../containers/RandomColour";
 import styles from "./Maths.module.css";
 
-const Maths = ({ step1, step2, getSign, submit }) => {
+function Maths({ step1, step2, getSign, submit }) {
   // console.log("Maths");
 
   const answerRef = useRef("");
@@ -67,6 +67,6 @@ const Maths = ({ step1, step2, getSign, submit }) => {
   }
 
   return null;
-};
+}
 
 export default Maths;

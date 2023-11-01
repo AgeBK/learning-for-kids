@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, memo } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "../../containers/Button";
 import { Section } from "../../containers/Section";
 import { RandomColour } from "../../containers/RandomColour";
@@ -6,52 +6,37 @@ import startBeeps from "../../audio/countdownStart.mp3";
 import fiveLeft from "../../audio/5toGo.mp3";
 import styles from "./Timer.module.css";
 
-function Timer({ step2, setStep2, setStep3, setResults, isError }) {
-  // console.log("Timer");
-
+function Timer({ step2, setStep2, setResults, isError, finalise }) {
   // Workflow
   // =================
-  // press start button
-  // Pre start phase: Ready set go displayed (preStart = true, start = false, step2 = false)
-  // Start phase: Count down timer displayed (preStart = false, start = true, setStep2(true) (step2 in parent, shows questions)
+  // Press start button
+  // Pre start phase: Ready set go displayed (preStart = true, isStart = false, step2 = false)
+  // Start phase: Count down timer displayed (preStart = false, isStart = true, setStep2(true) (step2 in parent, shows questions)
   // step2 = true, start timer for questions
-  // timer = 0, display finished, setStep2(false), setStep3(true) (step3 in parent, complete stage of workflow)
+  // timer = 0, display finished, setStep2(false), finalise (finalise function in parent, complete stage of workflow)
 
   const startTime = 60;
   const [time, setTime] = useState(startTime);
-  const intervalIdRef = useRef(null);
   const countRef = useRef(startTime);
+  const [preTime, setPreTime] = useState(0);
+  const intervalIdRef = useRef(null);
   const audioRef = useRef(null);
-  const secs = time % 60;
-  const [preStart, setpreStart] = useState(0);
-  const [isPreStart, setIsPreStart] = useState(false);
   const ready = ["Ready", "Set", "Go!!!"];
-  const [start, setStart] = useState(false);
+  const [isPreStart, setIsPreStart] = useState(false);
+  const [isStart, setIsStart] = useState(false);
   const [complete, setComplete] = useState(false);
-
-  const checkTimer = () => {
-    --countRef.current;
-    let count = countRef.current;
-
-    if (count === 5) {
-      audioRef.current = new Audio(fiveLeft);
-      audioRef.current.play();
-    }
-
-    count === 0 && resetVariables();
-  };
+  const secs = time % 60;
 
   useEffect(() => {
-    // set steps 2/3 here: get warnings in synchronous functions
-    if (start && !step2) {
+    if (isStart && !step2) {
       setStep2(true);
     }
 
     if (complete && step2) {
       setStep2(false);
-      setStep3(true);
+      finalise();
     }
-  }, [start, complete, step2, setStep2, setStep3]);
+  }, [isStart, complete, step2, setStep2, finalise]);
 
   useEffect(() => {
     isError && resetVariables();
@@ -74,8 +59,20 @@ function Timer({ step2, setStep2, setStep3, setResults, isError }) {
     countRef.current = startTime;
     setComplete(true);
     setIsPreStart(true);
-    setStart(false);
+    setIsStart(false);
     setTime(startTime);
+  };
+
+  const checkTimer = () => {
+    --countRef.current;
+    let count = countRef.current;
+
+    if (count === 5) {
+      audioRef.current = new Audio(fiveLeft);
+      audioRef.current.play();
+    }
+
+    count === 0 && resetVariables();
   };
 
   const startTimer = () => {
@@ -94,19 +91,18 @@ function Timer({ step2, setStep2, setStep3, setResults, isError }) {
     appropriateSound.play();
 
     intervalIdRef.current = setInterval(() => {
-      setpreStart((prev) => prev + 1);
+      setPreTime((prev) => prev + 1);
     }, 1000);
   };
 
-  if (preStart === ready.length) {
+  if (preTime === ready.length) {
     // pre-timer finished
     // set variables for challenge (step 2) - start countdown for quesitons
     clearInterval(intervalIdRef.current);
     intervalIdRef.current = null;
-
     setIsPreStart(false);
-    setpreStart(0);
-    setStart(true);
+    setPreTime(0);
+    setIsStart(true);
     startTimer();
   }
 
@@ -119,7 +115,7 @@ function Timer({ step2, setStep2, setStep3, setResults, isError }) {
               {complete ? (
                 <RandomColour>Finished!!</RandomColour>
               ) : (
-                <RandomColour>{ready[preStart]}</RandomColour>
+                <RandomColour>{ready[preTime]}</RandomColour>
               )}
             </div>
           ) : (
@@ -135,14 +131,14 @@ function Timer({ step2, setStep2, setStep3, setResults, isError }) {
           )}
         </div>
         <Button
-          css={start ? "reset" : "btn"}
-          onClick={start ? reset : startPreTimer}
+          css={isStart ? "reset" : "btn"}
+          onClick={isStart ? reset : startPreTimer}
         >
-          {start ? "Reset" : "Start"}
+          {isStart ? "Reset" : "Start"}
         </Button>
       </div>
     </Section>
   );
 }
 
-export default memo(Timer);
+export default Timer;

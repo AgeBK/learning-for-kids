@@ -24,7 +24,7 @@
 }
 
 .correct {
-  color: green;
+  color: #008000;
 }
 
 .wrong {
@@ -50,7 +50,7 @@
 }
 
 .records.current span {
-  background-color: green;
+  background-color: #008000;
   color: #000;
 }
 

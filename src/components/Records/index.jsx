@@ -1,32 +1,32 @@
-import React, { useState, useEffect, memo } from "react";
+import { useState, memo } from "react";
 import { Button } from "../../containers/Button";
 import { Section } from "../../containers/Section";
+import { createDemoRecords } from "../../data/defaultRecords";
 import styles from "./Records.module.css";
 
 function Records({ position, recordData }) {
-  // console.log("Records");
-
-  const [mathRecords, setMathRecords] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const [orderByDate, setOrderByDate] = useState(false);
-  let records = [...mathRecords];
-  let totalRecords = records.length;
   let top10Results = [];
 
-  useEffect(() => {
-    const storedRecords = JSON.parse(localStorage.getItem(recordData)) || [];
-    setMathRecords(storedRecords);
-  }, [position, recordData]);
+  const getRecords = () => JSON.parse(localStorage.getItem(recordData));
+
+  let records = getRecords();
+  if (!records) {
+    createDemoRecords(); // add some records for the demonstration purposes of this app
+    records = getRecords();
+  }
+  const totalRecords = records.length;
 
   if (orderByDate) {
     records = records.sort((a, b) =>
-      Number(new Date(a.date)) - Number(new Date(b.date)) < 0 ? 1 : -1
+      new Date(a.date) - new Date(b.date) < 0 ? 1 : -1
     );
   } else {
     records = records.sort((a, b) => (a.position - b.position < 0 ? -1 : 1));
   }
 
-  top10Results = [...records].filter((_, ind) => ind < 10);
+  top10Results = [...records].splice(0, 10);
   let data = showAll ? records : top10Results;
 
   const FormatDate = ({ date }) => {

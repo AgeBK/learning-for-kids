@@ -1,24 +1,20 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { Button } from "../../containers/Button";
 import { Section } from "../../containers/Section";
 import { RandomColour } from "../../containers/RandomColour";
 import styles from "./User.module.css";
 
 function User({ setUserName, userName, setStep1, step1 }) {
-  // console.log("User");
-
   const handleStep1 = (e) => {
     if ((e.key === "Enter" || e.type === "click") && userName.length > 0) {
       setStep1(true);
     }
   };
 
-  const handleChange = (e) => {
-    const { value } = e.target;
+  const handleChange = ({ target: { value } }) =>
     value
       ? setUserName(value[0].toUpperCase() + value.slice(1))
       : setUserName("");
-  };
 
   const Header = () => (
     <Section>

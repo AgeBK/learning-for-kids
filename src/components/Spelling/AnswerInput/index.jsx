@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Button } from "../../../containers/Button";
 import styles from "./AnswerInput.module.css";
 
@@ -10,8 +10,6 @@ function AnswerInput({
   indexRef,
   submit,
 }) {
-  // console.log("AnswerInput");
-
   useEffect(() => {
     // update focus each time a letter is entered
     answerRef.current && answerRef.current.focus();

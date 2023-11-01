@@ -1,10 +1,7 @@
-import React from "react";
 import { Section } from "../../containers/Section";
 import styles from "./Results.module.css";
 
 function Results({ getSign, results, isMaths }) {
-  // console.log("Results");
-
   if (results.length) {
     const total = results.length;
     const correct = results.filter(
@@ -24,7 +21,7 @@ function Results({ getSign, results, isMaths }) {
         </div>
         <hr />
         <div className={styles.resultCont}>
-          {results.map(({ num1, num2, answer, userAnswer, operation }, ind) => (
+          {results.map(({ num1, num2, answer, userAnswer }, ind) => (
             <div className={styles.results} key={ind}>
               <span>Q{ind + 1}: </span>
               {isMaths && (
@@ -51,7 +48,7 @@ function Results({ getSign, results, isMaths }) {
       </Section>
     );
   }
-
+  
   return null;
 }
 

@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./RandomColour.module.css";
 
 export const RandomColour = ({ children }) => {

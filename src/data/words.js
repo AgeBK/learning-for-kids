@@ -1,4 +1,4 @@
-const animals = [
+const words = [
   "Albatross",
   "Alligator",
   "Alpaca",
@@ -271,4 +271,4 @@ const animals = [
   "Noodles",
 ];
 
-export { animals };
+export { words };

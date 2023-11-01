@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Loading } from "../Loading";
 import ImageList from "./ImageList";
 import AnswerInput from "./AnswerInput";
 import { createApi } from "unsplash-js";
 import { Section } from "../../containers/Section";
-import { animals } from "../../data/animals";
+import { words } from "../../data/words";
 
 const unSplashAccessKey = "WwQoe_p8T_CLABx_Ay32MvDbK-FOc9vG-j43s2WpIdU";
 const unsplash = createApi({ accessKey: unSplashAccessKey });
@@ -20,8 +20,8 @@ function Spelling({ submit, results, setIsError }) {
   const indexRef = useRef(1); // the current index of the input fields
 
   useEffect(() => {
-    const randomNum = Math.floor(Math.random() * animals.length);
-    const randomAnimal = animals[randomNum];
+    const randomNum = Math.floor(Math.random() * words.length);
+    const randomAnimal = words[randomNum];
     // API search
     unsplash.search
       .getPhotos({
@@ -36,7 +36,7 @@ function Spelling({ submit, results, setIsError }) {
         });
         setUserAnswer([randomAnimal.substring(0, 1)]);
       })
-      .catch((err) => {
+      .catch(() => {
         setIsError(true);
       });
   }, [results, setIsError]); // run this each time results is updated
@@ -50,25 +50,23 @@ function Spelling({ submit, results, setIsError }) {
   const { data, loading, wordToSpell } = dataFetch;
 
   return (
-    <>
-      <Section>
-        {loading ? (
-          <Loading />
-        ) : (
-          <>
-            <ImageList data={data} />
-            <AnswerInput
-              userAnswer={userAnswer}
-              wordToSpell={wordToSpell}
-              handleAnswers={handleAnswers}
-              answerRef={answerRef}
-              indexRef={indexRef}
-              submit={submit}
-            />
-          </>
-        )}
-      </Section>
-    </>
+    <Section>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <ImageList data={data} />
+          <AnswerInput
+            userAnswer={userAnswer}
+            wordToSpell={wordToSpell}
+            handleAnswers={handleAnswers}
+            answerRef={answerRef}
+            indexRef={indexRef}
+            submit={submit}
+          />
+        </>
+      )}
+    </Section>
   );
 }
 

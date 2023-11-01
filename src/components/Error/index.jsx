@@ -1,4 +1,3 @@
-import React from "react";
 import { Section } from "../../containers/Section";
 import Img from "../../img/sad.png";
 import styles from "./Error.module.css";

@@ -1,8 +1,8 @@
 # Initial idea - 08/09/2023
 
-I was watching my son do some online learning homework and got the idea to build a kid's website where children could improve their maths and spelling skills.
+I was watching my son do some online homework and got the idea to build a kid's website where children could improve their maths and spelling skills.
 
-I want the user to be able to choose between either maths or spelling and either random maths questions or random images are generated/displayed which can be answered. I'm thinking of including a countdown timer and some sort of record table or a 'Top 10 Scores Style Table" to keep track of progress.
+I want the user to be able to choose between either maths or spelling and either random maths questions or random images are generated/displayed which can be answered. I'm thinking of including a countdown timer and some sort of record table or a Top 10 Scores Style Table to keep track of progress.
 
 # What I built
 
@@ -18,6 +18,7 @@ So, I stuck to the original idea, the user has a choice of doing maths (addition
 - Audio: sounds are played for correct/incorrect answers, also, sounds at the beginning and end of a challenge.
 - Uses unsplash-js for image searches used in spelling challenges. A word is randomly selected from an array and an image search is performed.
 
+
 # How it works
 
 - 1: The user must enter a username.
@@ -25,6 +26,9 @@ So, I stuck to the original idea, the user has a choice of doing maths (addition
 - 3: When ready, the user can click the start button. Ready, set, go is displayed (each word 1 second apart) then the timer and the first question will be displayed.
 - 4: The aim for the user is to answer as many questions as possible before the timer runs out.
 - 5: When the time is up, the timer stops, finished is displayed and the users' results are displayed in the records table which is saved in local storage.
+
+01/11//2023
+- Migrated app from CRA to Vite
 
 09/10/2023
 

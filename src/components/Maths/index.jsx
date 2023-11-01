@@ -1,14 +1,12 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Button } from "../../containers/Button";
 import { Section } from "../../containers/Section";
 import { RandomColour } from "../../containers/RandomColour";
 import styles from "./Maths.module.css";
 
 function Maths({ step1, step2, getSign, submit }) {
-  // console.log("Maths");
-
   const answerRef = useRef("");
-  const maxNum = 20;
+  const maxNum = 20; // 0-19
   const randomNumber = () => Math.floor(Math.random() * maxNum);
 
   const handleSubmit = (e, num1, num2) => {
